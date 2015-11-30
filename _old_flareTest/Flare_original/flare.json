@@ -1,0 +1,106 @@
+{
+ "name": "flare",
+ "children": [
+  {
+   "name": "analytics",
+   "children": [
+    {
+     "name": "Action",
+     "children": [
+      {
+       "name": "Unturned",
+       "developer": "Nelson Sexton",
+       "size": 100,
+       "publisher": "Smartly Dressed Games",
+       "score_rank": 83,
+       "owners": 18880955,
+       "owners_variance": 103860,
+       "players_forever": 13776952,
+       "players_forever_variance": 89645,
+       "players_2weeks": 967836,
+       "players_2weeks_variance": 24366,
+       "average_forever": 823,
+       "average_2weeks": 242,
+       "median_forever": 176,
+       "median_2weeks": 59,
+       "ccu": 26790
+      },
+      {
+       "name": "MMO",
+       "name": "Robocraft",
+       "developer": "Freejam",
+       "size": 100,
+       "publisher": "Freejam",
+       "score_rank": 54,
+       "owners": 8612631,
+       "owners_variance": 71613,
+       "players_forever": 5699284,
+       "players_forever_variance": 58590,
+       "players_2weeks": 248047,
+       "players_2weeks_variance": 12352,
+       "average_forever": 1093,
+       "average_2weeks": 272,
+       "median_forever": 140,
+       "median_2weeks": 63,
+       "ccu": 6901
+      },
+      {
+       "name": "Heroes & Generals",
+       "size": 100,
+       "developer": "Reto-Moto",
+       "publisher": "Reto-Moto",
+       "score_rank": 29,
+       "owners": 8292331,
+       "owners_variance": 70314,
+       "players_forever": 5185610,
+       "players_forever_variance": 55943,
+       "players_2weeks": 232081,
+       "players_2weeks_variance": 11948,
+       "average_forever": 602,
+       "average_2weeks": 262,
+       "median_forever": 55,
+       "median_2weeks": 42,
+       "ccu": 75
+      }
+     ]
+    },
+    {
+     "name": "MMO",
+     "children": [
+      {"appid":33930,"name":"Arma 2: Operation Arrowhead","developer":"Bohemia Interactive","publisher":"Bohemia Interactive","score_rank":83,"owners":3807479,"owners_variance":48065,"players_forever":3376541,"players_forever_variance":45301,"players_2weeks":140958,"players_2weeks_variance":9313,"average_forever":2824,"average_2weeks":631,"median_forever":203,"median_2weeks":159,"ccu":9218},
+      {"appid":109600,"name":"Neverwinter","developer":"Cryptic Studios","publisher":"Perfect World Entertainment","score_rank":49,"owners":3691358,"owners_variance":47337,"players_forever":2136949,"players_forever_variance":36125,"players_2weeks":80478,"players_2weeks_variance":7038,"average_forever":1558,"average_2weeks":580,"median_forever":311,"median_2weeks":168,"ccu":4205},
+      {"appid":55230,"name":"Saints Row: The Third","developer":"Volition","publisher":"Deep Silver","score_rank":95,"owners":3622653,"owners_variance":46900,"players_forever":2874640,"players_forever_variance":41839,"players_2weeks":67092,"players_2weeks_variance":6426,"average_forever":1579,"average_2weeks":177,"median_forever":919,"median_2weeks":69,"ccu":2246},
+      {"appid":8190,"name":"Just Cause 2","developer":"Avalanche Studios","publisher":"Square Enix","score_rank":89,"owners":3615396,"owners_variance":46854,"players_forever":2858190,"players_forever_variance":41721,"players_2weeks":97413,"players_2weeks_variance":7743,"average_forever":998,"average_2weeks":163,"median_forever":219,"median_2weeks":53,"ccu":3579},
+      {"appid":203160,"name":"Tomb Raider","developer":"Crystal Dynamics, Feral Interactive (Mac)","publisher":"Square Enix, Feral Interactive (Mac)","score_rank":92,"owners":3553303,"owners_variance":46456,"players_forever":2924153,"players_forever_variance":42194,"players_2weeks":121766,"players_2weeks_variance":8656,"average_forever":899,"average_2weeks":216,"median_forever":642,"median_2weeks":66,"ccu":5520},
+      {"appid":226320,"name":"Marvel Heroes 2015","developer":"Gazillion Entertainment","publisher":"Gazillion Entertainment","score_rank":52,"owners":3464116,"owners_variance":45877,"players_forever":1525217,"players_forever_variance":30555,"players_2weeks":49674,"players_2weeks_variance":5529,"average_forever":2110,"average_2weeks":686,"median_forever":83,"median_2weeks":87,"ccu":2633},
+      {"appid":113400,"name":"APB Reloaded","developer":"Reloaded Productions","publisher":"Reloaded Games","score_rank":27,"owners":3485243,"owners_variance":46015,"players_forever":1991959,"players_forever_variance":34887,"players_2weeks":54190,"players_2weeks_variance":5775,"average_forever":1852,"average_2weeks":418,"median_forever":158,"median_2weeks":93,"ccu":2483},
+      {"appid":271590,"name":"Grand Theft Auto V","developer":"Rockstar North","publisher":"Rockstar Games","score_rank":52,"owners":3412345,"owners_variance":45537,"players_forever":3331060,"players_forever_variance":44999,"players_2weeks":958482,"players_2weeks_variance":24248,"average_forever":5279,"average_2weeks":536,"median_forever":3429,"median_2weeks":190,"ccu":56646},
+      {"appid":42910,"name":"Magicka","developer":"Arrowhead Game Studios","publisher":"Paradox Interactive","score_rank":89,"owners":3498468,"owners_variance":46101,"players_forever":2937217,"players_forever_variance":42287,"players_2weeks":30482,"players_2weeks_variance":4332,"average_forever":619,"average_2weeks":119,"median_forever":279,"median_2weeks":58,"ccu":624},
+      {"appid":63380,"name":"Sniper Elite V2","developer":"Rebellion","publisher":"Rebellion","score_rank":70,"owners":3483953,"owners_variance":46006,"players_forever":2513052,"players_forever_variance":39147,"players_2weeks":45481,"players_2weeks_variance":5291,"average_forever":492,"average_2weeks":143,"median_forever":165,"median_2weeks":43,"ccu":835},
+      {"appid":221100,"name":"DayZ","developer":"Bohemia Interactive","publisher":"Bohemia Interactive","score_rank":39,"owners":3382347,"owners_variance":45339,"players_forever":3352188,"players_forever_variance":45139,"players_2weeks":243693,"players_2weeks_variance":12243,"average_forever":3920,"average_2weeks":313,"median_forever":1179,"median_2weeks":61,"ccu":7504},
+      {"appid":42700,"name":"Call of Duty: Black Ops","developer":"Treyarch","publisher":"Activision","score_rank":70,"owners":3358962,"owners_variance":45184,"players_forever":3212359,"players_forever_variance":44200,"players_2weeks":75156,"players_2weeks_variance":6801,"average_forever":1423,"average_2weeks":148,"median_forever":572,"median_2weeks":50,"ccu":1417},
+      {"appid":42710,"name":"Call of Duty: Black Ops - Multiplayer","developer":"Treyarch","publisher":"Activision","score_rank":"","owners":3358962,"owners_variance":45184,"players_forever":2857545,"players_forever_variance":41716,"players_2weeks":73705,"players_2weeks_variance":6735,"average_forever":4753,"average_2weeks":211,"median_forever":1334,"median_2weeks":41,"ccu":1808},
+      {"appid":91310,"name":"Dead Island","developer":"Techland","publisher":"Deep Silver","score_rank":64,"owners":3301062,"owners_variance":44798,"players_forever":2732231,"players_forever_variance":40801,"players_2weeks":57254,"players_2weeks_variance":5936,"average_forever":1160,"average_2weeks":178,"median_forever":449,"median_2weeks":57,"ccu":1377}
+     ]
+    },
+    {
+     "name": "Adventure",
+     "children": [
+      {"appid":100,"name":"Counter-Strike: Condition Zero Deleted Scenes","developer":"Valve","publisher":"Valve","score_rank":76,"owners":9197752,"owners_variance":73920,"players_forever":1673594,"players_forever_variance":31998,"players_2weeks":14676,"players_2weeks_variance":3006,"average_forever":182,"average_2weeks":51,"median_forever":34,"median_2weeks":17,"ccu":137},
+      {"appid":400,"name":"Portal","developer":"Valve","publisher":"Valve","score_rank":99,"owners":8889386,"owners_variance":72715,"players_forever":6296823,"players_forever_variance":61513,"players_2weeks":86607,"players_2weeks_variance":7301,"average_forever":318,"average_2weeks":106,"median_forever":176,"median_2weeks":55,"ccu":2005},
+      {"appid":301520,"name":"Robocraft","developer":"Freejam","publisher":"Freejam","score_rank":54,"owners":8612631,"owners_variance":71613,"players_forever":5699284,"players_forever_variance":58590,"players_2weeks":248047,"players_2weeks_variance":12352,"average_forever":1093,"average_2weeks":272,"median_forever":140,"median_2weeks":63,"ccu":6901},
+      {"appid":227940,"name":"Heroes & Generals","developer":"Reto-Moto","publisher":"Reto-Moto","score_rank":29,"owners":8292331,"owners_variance":70314,"players_forever":5185610,"players_forever_variance":55943,"players_2weeks":232081,"players_2weeks_variance":11948,"average_forever":602,"average_2weeks":262,"median_forever":55,"median_2weeks":42,"ccu":7564},
+      {"appid":30,"name":"Day of Defeat","developer":"Valve","publisher":"Valve","score_rank":76,"owners":7425455,"owners_variance":66651,"players_forever":1649564,"players_forever_variance":31769,"players_2weeks":13386,"players_2weeks_variance":2870,"average_forever":895,"average_2weeks":135,"median_forever":26,"median_2weeks":25,"ccu":320},
+      {"appid":620,"name":"Portal 2","developer":"Valve","publisher":"Valve","score_rank":99,"owners":7314334,"owners_variance":66164,"players_forever":6106353,"players_forever_variance":60598,"players_2weeks":240790,"players_2weeks_variance":12170,"average_forever":1018,"average_2weeks":212,"median_forever":602,"median_2weeks":75,"ccu":8799},
+      {"appid":40,"name":"Deathmatch Classic","developer":"Valve","publisher":"Valve","score_rank":59,"owners":7312882,"owners_variance":66158,"players_forever":763173,"players_forever_variance":21645,"players_2weeks":2258,"players_2weeks_variance":1179,"average_forever":87,"average_2weeks":55,"median_forever":8,"median_2weeks":6,"ccu":0},
+      {"appid":60,"name":"Ricochet","developer":"Valve","publisher":"Valve","score_rank":49,"owners":7296593,"owners_variance":66086,"players_forever":824782,"players_forever_variance":22499,"players_2weeks":3064,"players_2weeks_variance":1373,"average_forever":47,"average_2weeks":24,"median_forever":3,"median_2weeks":17,"ccu":17},
+      {"appid":105600,"name":"Terraria","developer":"Re-Logic","publisher":"Re-Logic","score_rank":95,"owners":6801627,"owners_variance":63868,"players_forever":6412299,"players_forever_variance":62060,"players_2weeks":571896,"players_2weeks_variance":18744,"average_forever":4380,"average_2weeks":465,"median_forever":1296,"median_2weeks":99,"ccu":28319},
+      {"appid":300,"name":"Day of Defeat: Source","developer":"Valve","publisher":"Valve","score_rank":80,"owners":6073774,"owners_variance":60440,"players_forever":2740940,"players_forever_variance":40865,"players_2weeks":50158,"players_2weeks_variance":5556,"average_forever":2061,"average_2weeks":213,"median_forever":100,"median_2weeks":66,"ccu":1653},
+      {"appid":380,"name":"Half-Life 2: Episode One","developer":"Valve","publisher":"Valve","score_rank":92,"owners":5859273,"owners_variance":59388,"players_forever":2332258,"players_forever_variance":37725,"players_2weeks":24676,"players_2weeks_variance":3897,"average_forever":316,"average_2weeks":109,"median_forever":204,"median_2weeks":68,"ccu":335}
+
+     ]
+    }
+   ]
+  }
+ ]
+}
