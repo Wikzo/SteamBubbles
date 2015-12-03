@@ -54,6 +54,22 @@
     myMap.set("MMO", "#98D5E3");
     myMap.set("heysa", "#FFFF00");
 
+    var diameter = 960,
+            format = d3.format(",d"),
+            color = d3.scale.category20c();
+
+    var tooltip = d3.select("body")
+            .append("div")
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden")
+            .style("color", "white")
+            .style("padding", "8px")
+            .style("background-color", "rgba(0, 0, 0, 0.75)")
+            .style("border-radius", "6px")
+            .style("font", "12px sans-serif")
+            .text("tooltip");
+
     var w = 1280,
             h = 800,
             r = 720,
@@ -64,7 +80,7 @@
 
     var pack = d3.layout.pack()
             .size([r, r])
-            .value(function(d) { return d.score_rank; })
+            .value(function(d) { return d.score_rank; });
 
     var vis = d3.select("body").insert("svg:svg", "h2")
             .attr("width", w)
@@ -85,9 +101,28 @@
                 .attr("cx", function(d) { return d.x; })
                 .attr("cy", function(d) { return d.y; })
                 .attr("r", function(d) { return d.r; })
-
                 .on("click", function(d) { return zoom(node == d ? root : d); });
 
+        vis.selectAll("image")
+                .data(nodes)
+                .enter().append("svg:image")
+                .attr("x", function(d) {return d.x; })
+                .attr("y", function(d) { return d.y; })
+                .attr("width", function(d) { return d.r*2; })
+                .attr("height", function(d) { return d.r*2; })
+                .style("opacity", function(d)
+                {
+                    // only show images for inner bubbles
+                    return d.children ? 0 : 1;
+                })
+                .attr("xlink:href", function(d){
+
+                    // show steam logo for outer bubbles
+                    if (d.children)
+                        return "http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
+
+                    return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
+                });
 
 
         vis.selectAll("text")
@@ -99,7 +134,7 @@
                 .attr("dy", ".35em")
                 .attr("text-anchor", "middle")
                 .style("opacity", function(d) { return d.r > 20 ? 1 : 0; })
-                .text(function(d) { return d.name; });
+                .text(function(d) { return d.name; })
 
         d3.select(window).on("click", function() { zoom(root); });
     });
