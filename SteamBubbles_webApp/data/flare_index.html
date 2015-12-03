@@ -94,6 +94,7 @@
         console.log(node);
         var nodes = pack.nodes(root);
 
+
         vis.selectAll("circle")
                 .data(nodes)
                 .enter().append("svg:circle")
@@ -101,6 +102,7 @@
                 .attr("cx", function(d) { return d.x; })
                 .attr("cy", function(d) { return d.y; })
                 .attr("r", function(d) { return d.r; })
+                .style("opacity", 0.2)
                 .on("click", function(d) { return zoom(node == d ? root : d); });
 
         vis.selectAll("image")
@@ -114,6 +116,12 @@
                 {
                     // only show images for inner bubbles
                     return d.children ? 0 : 1;
+
+                    if (d.r >= 5)
+                        return 1;
+                    else
+                     return 0;
+
                 })
                 .attr("xlink:href", function(d){
 
@@ -122,7 +130,32 @@
                         return "http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
 
                     return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
-                });
+                })
+                .on("mouseover", function(d){
+
+                    if (d.children) // dont show outer bubbles
+                        return;
+
+                    tooltip.html("<b>Game: </b>" + d.name +
+                            "<br/><b>Developer: </b>" + d.developer
+                    + "<br/><b>Publisher: </b>" + d.publisher
+                    + "<br/><b>Ranking: </b>" + d.score_rank
+                    + "<br/><b>Players forever: </b>" + d.players_forever);
+                    tooltip.append("img")
+                            .attr("src","http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg")
+                            .attr("width","230px")
+                            .attr("height","107.5px");
+                    tooltip.style("visibility", "visible");
+                })
+                .on("mousemove", function() {
+                    return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+                })
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
+                .on("click", function(d) { return zoom(node == d ? root : d); });
+
+
+
+
 
 
         vis.selectAll("text")
@@ -134,9 +167,16 @@
                 .attr("dy", ".35em")
                 .attr("text-anchor", "middle")
                 .style("opacity", function(d) { return d.r > 20 ? 1 : 0; })
+                .style("font", function(d)
+                {
+                    if (d.children)
+                        return "30px sans-serif"
+                    else
+                        return "12px sans-serif"
+                })
                 .text(function(d) { return d.name; })
 
-        d3.select(window).on("click", function() { zoom(root); });
+        //d3.select(window).on("click", function() { zoom(root); });
     });
 
     function zoom(d, i) {
@@ -146,6 +186,27 @@
 
         var t = vis.transition()
                 .duration(d3.event.altKey ? 7500 : 750);
+
+        console.log(d.r);
+
+
+        t.selectAll("image")
+                .attr("x", function(d) { return x(d.x); })
+                .attr("y", function(d) { return y(d.y); })
+                //.attr("r", function(d) { return k * d.r; })
+                .style("opacity", function(d)
+                {
+
+                    // only show images for inner bubbles
+                    return d.children ? 0 : 1;
+
+                    if (d.r >= 5)
+                        return 1;
+                    else
+                        return 0;
+                });
+
+
 
         t.selectAll("circle")
                 .attr("cx", function(d) { return x(d.x); })
