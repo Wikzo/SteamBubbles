@@ -95,7 +95,7 @@
       ]
     },
     {
-      "name": "Adventure",
+      "name": "ADVENTURE",
       "children":
       [
         {"appid":304930,"name":"Unturned","developer":"Nelson Sexton","publisher":"Smartly Dressed Games","score_rank":83,"owners":18880955,"owners_variance":103860,"players_forever":13776952,"players_forever_variance":89645,"players_2weeks":967836,"players_2weeks_variance":24366,"average_forever":823,"average_2weeks":242,"median_forever":176,"median_2weeks":59,"ccu":26790},
