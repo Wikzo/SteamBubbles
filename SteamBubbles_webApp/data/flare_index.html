@@ -79,7 +79,9 @@
             root;
 
     var pack = d3.layout.pack()
-            .size([r, r])
+            .size([r, r]).sort(function(a, b) {
+                return a.score_rank - b.score_rank;
+            })
             .value(function(d) { return d.score_rank; });
 
     var vis = d3.select("body").insert("svg:svg", "h2")
@@ -94,27 +96,53 @@
 
         console.log(data);
 
-        var b100 = [];
-        var b90 = [];
-        var gameNode = {"name": "GAMES_2", "children" : [b100, b90]};
+        var b100 = {"children" : []};
+        var b90 = {"children" : []};
+        var b80 = {"children" : []};
+        var b70 = {"children" : []};
+        var b60 = {"children" : []};
+        var b50 = {"children" : []};
+        var b40 = {"children" : []};
+        var b30 = {"children" : []};
+        var b20 = {"children" : []};
+        var b10 = {"children" : []};
+        var gameNode = {"name": "GAMES_2", "children" : [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
 
-        console.log(gameNode);
+
 
         // get all children's score rank
         root.children.forEach(function(d) {
             if(d.children) {
                 d.children.forEach(function(game) {
-                   //console.log(game.score_rank);
-                    if (game.score_rank > 90)
-                        gameNode.children[0].push(game);
+                        //console.log(game.score_rank);
+                        if (game.score_rank > 90)
+                            gameNode.children[0].children.push(game);
+                        else if (game.score_rank > 80)
+                            gameNode.children[1].children.push(game);
+                        else if (game.score_rank > 70)
+                            gameNode.children[2].children.push(game);
+                        else if (game.score_rank > 50)
+                            gameNode.children[4].children.push(game);
+                        else if (game.score_rank > 40)
+                            gameNode.children[5].children.push(game);
+                        else if (game.score_rank > 30)
+                            gameNode.children[6].children.push(game);
+                        else if (game.score_rank > 20)
+                            gameNode.children[7].children.push(game);
+                        else if (game.score_rank > 10)
+                            gameNode.children[8].children.push(game);
+                        else
+                            gameNode.children[9].children.push(game);
+
+
+
 
                 });
             }
         });
 
-        
-        //console.log(node);
         var nodes = pack.nodes(gameNode);
+        console.log(nodes);
 
 
         vis.selectAll("circle")
@@ -162,13 +190,13 @@
         vis.selectAll("image")
                 .data(nodes)
                 .enter().append("svg:image")
-                .attr("x", function(d) {return d.x; })
-                .attr("y", function(d) { return d.y; })
+                .attr("x", function(d) {return d.x - 10; })
+                .attr("y", function(d) { return d.y - 10; })
                 .attr("width", function(d) { return d.r; })
                 .attr("height", function(d) { return d.r; })
                 .style("opacity", function(d)
                 {
-
+                    //return 1;
                     // only show for zoomed in
                     return d.r > 20 ? 1 : 0;
 
@@ -197,12 +225,12 @@
                     if (d.children) // dont show outer bubbles
                         return;
 
-                    tooltip.html("<b>Game: </b>" + d.name +
+                    tooltip.html("<div><b>Game: </b>" + d.name +
                             "<br/><b>Developer: </b>" + d.developer
                     + "<br/><b>Publisher: </b>" + d.publisher
                     + "<br/><b>Ranking: </b>" + d.score_rank
                     + "<br/><b>Players forever: </b>" + d.players_forever
-                    +" <img src='http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png' />");
+                    +" </div>");
                     tooltip.append("img")
                             .attr("src","http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg")
                             .attr("width","230px")
