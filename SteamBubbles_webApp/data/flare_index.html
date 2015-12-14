@@ -88,11 +88,33 @@
             .append("svg:g")
             .attr("transform", "translate(" + (w - r) / 2 + "," + (h - r) / 2 + ")");
 
-    d3.json("all_data.json", function(data) {
+    d3.json("all_data.json", function(error, data) {
+        if (error) throw error;
         node = root = data;
 
-        console.log(node);
-        var nodes = pack.nodes(root);
+        console.log(data);
+
+        var b100 = [];
+        var b90 = [];
+        var gameNode = {"name": "GAMES_2", "children" : [b100, b90]};
+
+        console.log(gameNode);
+
+        // get all children's score rank
+        root.children.forEach(function(d) {
+            if(d.children) {
+                d.children.forEach(function(game) {
+                   //console.log(game.score_rank);
+                    if (game.score_rank > 90)
+                        gameNode.children[0].push(game);
+
+                });
+            }
+        });
+
+        
+        //console.log(node);
+        var nodes = pack.nodes(gameNode);
 
 
         vis.selectAll("circle")
@@ -134,6 +156,8 @@
                     else
                         return '#ffffff'; }) // <--------- COLOR
                 .on("click", function(d) { return zoom(node == d ? root : d); });
+
+
 
         vis.selectAll("image")
                 .data(nodes)
@@ -177,7 +201,8 @@
                             "<br/><b>Developer: </b>" + d.developer
                     + "<br/><b>Publisher: </b>" + d.publisher
                     + "<br/><b>Ranking: </b>" + d.score_rank
-                    + "<br/><b>Players forever: </b>" + d.players_forever);
+                    + "<br/><b>Players forever: </b>" + d.players_forever
+                    +" <img src='http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png' />");
                     tooltip.append("img")
                             .attr("src","http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg")
                             .attr("width","230px")
