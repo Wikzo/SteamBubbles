@@ -65,16 +65,21 @@
 
     var URLs = [action, adventure, casual, indie, mmo, racing, rpg, simulation, sports, strategy];
 
-    var actionData;
-    var adventureData;
-    var casualData;
-    var indieData;
-    var mmoData;
-    var racingData;
-    var rpgData;
-    var simulationData;
-    var sportsData;
-    var strategyData;
+    var actionData = {"children": []};
+    var adventureData =new Array();
+    var casualData = new Array();
+    var indieData = new Array();
+    var mmoData =new Array();
+    var racingData =new Array();
+    var rpgData = new Array();
+    var simulationData = new Array();
+    var sportsData =new Array();
+    var strategyData = new Array();
+
+    /*var arr = new Array();
+    // or var arr = [];
+    arr.push('value1');
+    arr.push('value2');*/
 
     var allCombined;
 
@@ -83,26 +88,47 @@
     {
         d3.json(URLs[loadingIndex].url, function (error, data) {
 
+
             if (loadingIndex == 0)
-                actionData = data;
+            {
+                var workAsArray = []; // This will be the resulting array
+                for(var key in data)
+                {
+                    var entry = data[key]; // This will be each of the three graded things
+                    entry.id = key; // e.g. "id": "assessment1"
+                    workAsArray.push(entry)
+                }
+                console.log("array work");
+                console.log(workAsArray);
+
+               // console.log("Here is data:");
+               // console.log(data);
+
+                var arr = new Array();
+                arr.push(workAsArray);
+                actionData.children = workAsArray;
+                actionData.name = "action name";
+
+            }
+
             else if (loadingIndex == 1)
-                adventureData = data;
+                adventureData.push(data);
             else if (loadingIndex == 2)
-                casualData = data;
+                casualData.push(data);
             else if (loadingIndex == 3)
-                indieData = data;
+                indieData.push(data);
             else if (loadingIndex == 4)
-                mmoData = data;
+                mmoData.push(data);
             else if (loadingIndex == 5)
-                racingData= data;
+                racingData.push(data);
             else if (loadingIndex == 6)
-                rpgData= data;
+                rpgData.push(data);
             else if (loadingIndex == 7)
-                simulationData= data;
+                simulationData.push(data);
             else if (loadingIndex == 8)
-                sportsData= data;
+                sportsData.push(data);
             else if (loadingIndex == 9)
-                strategyData= data;
+                strategyData.push(data);
 
 
             data.category = URLs[loadingIndex].name;
@@ -138,20 +164,12 @@
     {
        allCombined = [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData];
 
-        console.log(allCombined);
+        //console.log(allCombined);
 
         showCircles();
     }
     //printStuff();
 
-
-
-
-    var myMap = new Map();
-    myMap.set("Action", "#5C1C2C");
-    myMap.set("RPG", "#253B59");
-    myMap.set("MMO", "#98D5E3");
-    myMap.set("heysa", "#FFFF00");
 
     var diameter = 960,
             format = d3.format(",d"),
@@ -196,11 +214,10 @@
             node = root = data;
             //root = allCombined;
 
-            //console.log(data);
+
 
             var games1 = {"name": "GAMES_1", "children": [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData]};
-            data = games1;
-            console.log(data);
+            //root = games1;
 
             var b100 = {"children": []};
             var b90 = {"children": []};
@@ -225,22 +242,37 @@
             b10.IntervalName = "0-10%";
 
             var gameNode = {"name": "GAMES_2", "children": [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
-            //var gameNode = {"name": "GAMES_2", "children": [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
-//       allCombined = [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData];
 
+
+
+/*            console.log("original:");
+            console.log(root.children);
+            console.log("new:");
+            console.log(games1.children);*/
+            console.log("new:");
+            //console.log(games1);
+            games1.children.forEach(function (d) {
+                console.log("new:");
+              //  console.log(d.children);
+                console.log(d);
+
+
+
+            });
 
             // get all children's score rank
             root.children.forEach(function (d) {
 
-//console.log(d);
+                console.log("old:");
+               console.log(d);
 
                 if (d.children) {
 
                     d.children.forEach(function (game) {
-                        //console.log(game.score_rank);
+                        //console.log(game);
 
                         // console.log(d);
-                        game.Category = d.name;
+                       // game.Category = d.name;
                         // console.log(game);
 
                         if (game.score_rank > 90)
