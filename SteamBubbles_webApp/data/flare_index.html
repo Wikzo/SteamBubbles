@@ -66,15 +66,15 @@
     var URLs = [action, adventure, casual, indie, mmo, racing, rpg, simulation, sports, strategy];
 
     var actionData = {"children": []};
-    var adventureData =new Array();
-    var casualData = new Array();
-    var indieData = new Array();
-    var mmoData =new Array();
-    var racingData =new Array();
-    var rpgData = new Array();
-    var simulationData = new Array();
-    var sportsData =new Array();
-    var strategyData = new Array();
+    var adventureData ={"children": []};
+    var casualData = {"children": []};
+    var indieData = {"children": []};
+    var mmoData ={"children": []};
+    var racingData ={"children": []};
+    var rpgData = {"children": []};
+    var simulationData = {"children": []};
+    var sportsData ={"children": []};
+    var strategyData ={"children": []};
 
     /*var arr = new Array();
     // or var arr = [];
@@ -88,50 +88,67 @@
     {
         d3.json(URLs[loadingIndex].url, function (error, data) {
 
+            var workAsArray = []; // This will be the resulting array
+            for(var key in data)
+            {
+                var entry = data[key]; // This will be each of the three graded things
+                entry.id = key; // e.g. "id": "assessment1"
+                workAsArray.push(entry)
+            }
 
             if (loadingIndex == 0)
             {
-                var workAsArray = []; // This will be the resulting array
-                for(var key in data)
-                {
-                    var entry = data[key]; // This will be each of the three graded things
-                    entry.id = key; // e.g. "id": "assessment1"
-                    workAsArray.push(entry)
-                }
-                console.log("array work");
-                console.log(workAsArray);
-
-               // console.log("Here is data:");
-               // console.log(data);
-
-                var arr = new Array();
-                arr.push(workAsArray);
                 actionData.children = workAsArray;
-                actionData.name = "action name";
-
+                actionData.Category = URLs[loadingIndex].name;
             }
 
             else if (loadingIndex == 1)
-                adventureData.push(data);
+            {
+                adventureData.children = workAsArray;
+                adventureData.Category = URLs[loadingIndex].name;
+            }
             else if (loadingIndex == 2)
-                casualData.push(data);
+            {
+                casualData.children = workAsArray;
+                casualData.Category = URLs[loadingIndex].name;
+            }
             else if (loadingIndex == 3)
-                indieData.push(data);
+            {
+                indieData.children = workAsArray;
+                indieData.Category = URLs[loadingIndex].name;
+            }
             else if (loadingIndex == 4)
-                mmoData.push(data);
+            {
+                mmoData.children = workAsArray;
+                mmoData.Category = URLs[loadingIndex].name;
+            }
             else if (loadingIndex == 5)
-                racingData.push(data);
+            {
+                racingData.children = workAsArray;
+                racingData.Category = URLs[loadingIndex].name;
+            }
             else if (loadingIndex == 6)
-                rpgData.push(data);
+            {
+                rpgData.children = workAsArray;
+                rpgData.Category = URLs[loadingIndex].name;
+            }
             else if (loadingIndex == 7)
-                simulationData.push(data);
+            {
+                simulationData.children = workAsArray;
+                simulationData.Category = URLs[loadingIndex].name;
+            }
             else if (loadingIndex == 8)
-                sportsData.push(data);
+            {
+                sportsData.children = workAsArray;
+                sportsData.Category = URLs[loadingIndex].name;
+            }
             else if (loadingIndex == 9)
-                strategyData.push(data);
+            {
+                strategyData.children = workAsArray;
+                strategyData.Category = URLs[loadingIndex].name;
+            }
 
-
-            data.category = URLs[loadingIndex].name;
+            data.Category = URLs[loadingIndex].name;
 
             DoneLoading(URLs[loadingIndex]);
         });
@@ -217,7 +234,7 @@
 
 
             var games1 = {"name": "GAMES_1", "children": [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData]};
-            //root = games1;
+            root = games1;
 
             var b100 = {"children": []};
             var b90 = {"children": []};
@@ -245,31 +262,18 @@
 
 
 
-/*            console.log("original:");
-            console.log(root.children);
-            console.log("new:");
-            console.log(games1.children);*/
-            console.log("new:");
-            //console.log(games1);
-            games1.children.forEach(function (d) {
-                console.log("new:");
-              //  console.log(d.children);
-                console.log(d);
 
-
-
-            });
 
             // get all children's score rank
             root.children.forEach(function (d) {
 
-                console.log("old:");
-               console.log(d);
+               // console.log("old:");
+              // console.log(d);
 
                 if (d.children) {
 
                     d.children.forEach(function (game) {
-                        //console.log(game);
+                        game.Category = d.Category;
 
                         // console.log(d);
                        // game.Category = d.name;
