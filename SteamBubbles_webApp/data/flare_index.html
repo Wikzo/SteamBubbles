@@ -3,16 +3,19 @@
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=UTF8">
 
-
+<head>
+    <title>SteamBubbles</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
 <style>
 
     text {
-        font: 10px sans-serif;
+        font: 20px sans-serif;
     }
 
 
     text {
-        font-size: 11px;
+        font-size: 20px;
         pointer-events: none;
     }
 
@@ -42,12 +45,56 @@
     }
 
 </style>
+</head>
+
 <body>
+
+
+<h1>SteamBubbles</h1>
+<button onclick="Reload()">Reload</button>
+
+
+
+<form>
+    Minimum player threshold (last two weeks): <input type="text" name="firstname"><br>
+    Minimum concurrent players (last two weeks): <input type="text" name="lastname">
+</form>
+
+
+
+<p>
+    <img src="http://i.imgur.com/jr4cr2A.png" />
+    <label for="nRadius"
+           style="display: inline-block; width: 240px; text-align: right">
+        radius = <span id="nRadius-value">...</span>
+    </label>
+    <input type="range" min="1000" max="10000" id="nRadius">
+
+
+</p>
+
+
+
 <script src="//d3js.org/d3.v3.min.js"></script>
+
+
 
 
 <script type="text/javascript">
 
+    // input fields and more:
+    // http://www.d3noob.org/2014/04/using-html-inputs-with-d3js.html
+    // https://gist.github.com/bjtucker/fd3aa6e64d565962f1c1
+
+    // when the input range changes update the circle
+    d3.select("#nRadius").on("input", function() {
+        //update(+this.value);
+        console.log(this.value);
+
+        minimumPlayersLastTwoWeekThreshold = this.value;
+    });
+
+    var minimumPlayersLastTwoWeekThreshold = 5000;
 
     // access external JSON data in Chrome:
     // https://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource
@@ -83,9 +130,15 @@
 
     var allCombined;
 
+    function Reload()
+    {
+        loadingIndex = 0;
+        LoadDataFromSteamSpy();
+    }
     var loadingIndex = 0;
     function LoadDataFromSteamSpy()
     {
+        console.log("loading");
         d3.json(URLs[loadingIndex].url, function (error, data) {
 
             var workAsArray = []; // This will be the resulting array
@@ -93,7 +146,13 @@
             {
                 var entry = data[key]; // This will be each of the three graded things
                 entry.id = key; // e.g. "id": "assessment1"
-                workAsArray.push(entry)
+
+                if (entry.players_2weeks > minimumPlayersLastTwoWeekThreshold)
+                {
+                    //console.log(entry);
+                    workAsArray.push(entry)
+
+                }
             }
 
             if (loadingIndex == 0)
@@ -165,7 +224,7 @@
             CheckIfAllDone();
     }
 
-    LoadDataFromSteamSpy();
+    Reload();
 
 
 
@@ -174,19 +233,16 @@
     {
         setTimeout(LoadDataFromSteamSpy, 4000);
     }
-    //LoadDataFromSteamSpy(rpgURL, rpgData);
 
 
     function CheckIfAllDone()
     {
-       allCombined = [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData];
+       //allCombined = [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData];
 
         //console.log(allCombined);
 
         showCircles();
     }
-    //printStuff();
-
 
     var diameter = 960,
             format = d3.format(",d"),
@@ -229,9 +285,6 @@
 
             if (error) throw error;
             node = root = data;
-            //root = allCombined;
-
-
 
             var games1 = {"name": "GAMES_1", "children": [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData]};
             root = games1;
@@ -259,9 +312,6 @@
             b10.IntervalName = "0-10%";
 
             var gameNode = {"name": "GAMES_2", "children": [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
-
-
-
 
 
             // get all children's score rank
@@ -448,9 +498,9 @@
                 .style("font", function(d)
                 {
                     if (d.children)
-                        return "30px sans-serif"
+                        return "50px sans-serif";
                     else
-                        return "12px sans-serif"
+                        return "52px sans-serif"
                 })
                 .text(
                 function(d) { return d.
@@ -518,3 +568,7 @@
     }
 
 </script>
+
+
+</body>
+</html>
