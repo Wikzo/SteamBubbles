@@ -106,15 +106,36 @@
         var b30 = {"children" : []};
         var b20 = {"children" : []};
         var b10 = {"children" : []};
+
+        b100.IntervalName = "91-100%";
+        b90.IntervalName = "81-90%";
+        b80.IntervalName = "71-80%";
+        b70.IntervalName = "61-70%";
+        b60.IntervalName = "51-60%";
+        b50.IntervalName = "41-50%";
+        b40.IntervalName = "31-40%";
+        b30.IntervalName = "21-30%";
+        b20.IntervalName = "11-20%";
+        b10.IntervalName = "0-10%";
+
         var gameNode = {"name": "GAMES_2", "children" : [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
 
 
 
         // get all children's score rank
         root.children.forEach(function(d) {
+
+//console.log(d);
+
             if(d.children) {
+
                 d.children.forEach(function(game) {
                         //console.log(game.score_rank);
+
+                   // console.log(d);
+                    game.Category = d.name;
+                   // console.log(game);
+
                         if (game.score_rank > 90)
                             gameNode.children[0].children.push(game);
                         else if (game.score_rank > 80)
@@ -154,35 +175,34 @@
                 .attr("r", function(d) { return d.r; })
                 .style("opacity", 1)
                 .style("fill", function(d) {
-
-                    if (!d.children) {
-                        var parent = d.parent;
-                        console.log(parent.name); // <--- how to get outer name?
+                    console.log("here2: ");
+                    console.log(d);
 
                         // genre color
-                        if (parent.name == "ACTION")
+                        if (d.Category == "ACTION")
                             return '#9b2f3a';
-                        if (parent.name == "ADVENTURE")
+                        else if (d.Category == "ADVENTURE")
                             return '#576c5e';
-                        if (parent.name == "CASUAL")
+                        else if (d.Category == "CASUAL")
                             return '#dac5a8';
-                        if (parent.name == "INDIE")
+                        else if (d.Category == "INDIE")
                             return '#93794d';
-                        if (parent.name == "MMO")
+                        else if (d.Category == "MMO")
                             return '#1a3f75';
-                        if (parent.name == "RACING")
+                        else if (d.Category == "RACING")
                             return '#093640';
-                        if (parent.name == "RPG")
+                        else if (d.Category== "RPG")
                             return '#04b2d9';
-                        if (parent.name == "SIMULATION")
+                        else if (d.Category== "SIMULATION")
                             return '#f28f38';
-                        if (parent.name == "SPORTS")
+                        else if (d.Category == "SPORTS")
                             return '#f2be5c';
-                        if (parent.name == "STRATEGY")
+                        else if (d.Category == "STRATEGY")
                             return '#f2766b';
-                    }
-                    else
-                        return '#ffffff'; }) // <--------- COLOR
+                        else
+                            return "#ffffff";
+
+                   }) // <--------- COLOR
                 .on("click", function(d) { return zoom(node == d ? root : d); });
 
 
@@ -215,10 +235,10 @@
                 .attr("xlink:href", function(d){
 
                     // show steam logo for outer bubbles
-                    if (d.children)
+                   /* if (d.children)
                         return "http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
 
-                    return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
+                    return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";*/
                 })
                 .on("mouseover", function(d){
 
@@ -227,6 +247,7 @@
 
                     tooltip.html("<div><b>Game: </b>" + d.name +
                             "<br/><b>Developer: </b>" + d.developer
+                    + "<br/><b>Genre: </b>" + d.Category
                     + "<br/><b>Publisher: </b>" + d.publisher
                     + "<br/><b>Ranking: </b>" + d.score_rank
                     + "<br/><b>Players forever: </b>" + d.players_forever
@@ -259,7 +280,7 @@
                     else
                         return "12px sans-serif"
                 })
-                .text(function(d) { return d.name; });
+                .text(function(d) { return d.IntervalName; });
 
         //d3.select(window).on("click", function() { zoom(root); });
     });
