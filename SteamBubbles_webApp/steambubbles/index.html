@@ -51,20 +51,51 @@
 <button onclick="Reload()">Show fewer games</button>
 
 
+<br class="filter_options">
+
+<p><b>Genres Filters:</b></p>
 
 
-<div class="filter_options">
-    <input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
-    <input class="filter_button" id="adventure_button" type="checkbox" checked>Adventure</input>
-    <input class="filter_button" id="casual_button" type="checkbox" checked>Casual</input>
-    <input class="filter_button" id="indie_button" type="checkbox"checked >Indie</input>
-    <input class="filter_button" id="mmo_button" type="checkbox"checked >MMO</input>
-    <input class="filter_button" id="racing_button" type="checkbox" checked>Racing</input>
-    <input class="filter_button" id="rpg_button" type="checkbox" checked>RPG</input>
-    <input class="filter_button" id="simulation_button" type="checkbox" checked >Simulation</input>
-    <input class="filter_button" id="sports_button" type="checkbox" checked>Sports</input>
-    <input class="filter_button" id="strategy_button" type="checkbox" checked>Strategy</input>
-    <input class="filter_button" id="icons_button" type="checkbox" checked>Show icons</input>
+<table style="width:100%">
+    <tr>
+        <td><input class="filter_button" id="icons_button" type="checkbox">Display Icons</input></td>
+
+        <td><input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
+            </br><img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                      width="42"></td>
+        <td><input class="filter_button" id="adventure_button" type="checkbox" checked>Adventure</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+        <td><input class="filter_button" id="casual_button" type="checkbox" checked>Casual</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+        <td><input class="filter_button" id="indie_button" type="checkbox" checked>Indie</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+        <td><input class="filter_button" id="mmo_button" type="checkbox" checked>MMO</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+        <td><input class="filter_button" id="racing_button" type="checkbox" checked>Racing</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+        <td><input class="filter_button" id="rpg_button" type="checkbox" checked>RPG</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+        <td><input class="filter_button" id="simulation_button" type="checkbox" checked>Simulation</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+        <td><input class="filter_button" id="sports_button" type="checkbox" checked>Sports</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+        <td><input class="filter_button" id="strategy_button" type="checkbox" checked>Strategy</input></br>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                 width="42"></td>
+
+
+    </tr>
+</table>
+
+
 </div>
 
 <script src="//d3js.org/d3.v3.min.js"></script>
@@ -141,7 +172,18 @@
     var currentSportsColor = '#f2be5c';
     var currentStrategyColor = '#f2766b';
 
-    var showIcons = true;
+    var actionIcon = "http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png";
+    var adventureIcon = "http://icons.iconarchive.com/icons/icons8/ios7/128/Cinema-Adventures-icon.png";
+    var casualIcon = "http://icons.iconarchive.com/icons/double-j-design/ravenna-3d/128/Poker-icon.png";
+    var indieIcon = "http://icons.iconarchive.com/icons/designcontest/vintage/128/Pixel-Art-icon.png";
+    var mmoIcon = "http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/World-icon.png";
+    var racingIcon = "http://icons.iconarchive.com/icons/bartkowalski/1960-matchbox-cars/128/BRM-Racing-Car-icon.png";
+    var rpgIcon = "http://icons.iconarchive.com/icons/chrisl21/minecraft/128/Iron-Sword-icon.png";
+    var simulationIcon = "http://icons.iconarchive.com/icons/awicons/vista-artistic/128/2-Hot-Train-icon.png";
+    var sportsIcon = "http://icons.iconarchive.com/icons/custom-icon-design/flatastic-10/128/Sport-american-football-icon.png";
+    var strategyIcon = "http://icons.iconarchive.com/icons/aha-soft/free-large-boss/128/Army-Officer-icon.png"
+
+    var showIcons = false;
 
     var showAction = true;
     var showCasual = true;
@@ -152,7 +194,6 @@
     var showSimulation = true;
     var showSports = true;
     var showStrategy = true;
-
 
     var adventureColor = '#576c5e';
     var casualColor = '#dac5a8';
@@ -202,7 +243,7 @@
     }
     var loadingIndex = 0;
     function LoadDataFromSteamSpy() {
-        console.log("loading");
+        //console.log("loading");
         d3.json(URLs[loadingIndex].url, function (error, data) {
 
             if (error == null)
@@ -269,7 +310,7 @@
     }
 
     function DoneLoading(dataToStore) {
-        console.log(URLs[loadingIndex].name + " done");
+        console.log(URLs[loadingIndex].name + " loaded");
         loadingIndex++;
 
         if (loadingIndex < URLs.length)
@@ -313,9 +354,9 @@
             .style("font", "12px sans-serif")
             .text("tooltip");
 
-    var w = 1280,
-            h = 800,
-            r = 720,
+    var w = window.innerWidth,
+            h = window.innerWidth,
+            r = window.innerWidth,
             x = d3.scale.linear().range([0, r]),
             y = d3.scale.linear().range([0, r]),
             node,
@@ -336,16 +377,16 @@
             .attr("transform", "translate(" + (w - r) / 2 + "," + (h - r) / 2 + ")");
 
     function showCircles() {
-        d3.json("all_data.json", function (error, data) {
 
-            if (error) throw error;
-            node = root = data;
+
 
             var games1 = {
                 "name": "GAMES_1",
                 "children": [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData]
             };
-            root = games1;
+        node = root = games1;
+
+        root = games1;
 
 
             var b100 = {"children": []};
@@ -445,19 +486,19 @@
                         else if (d.Category == "ADVENTURE")
                             return adventureColor;
                         else if (d.Category == "CASUAL")
-                           return casualColor;
+                            return casualColor;
                         else if (d.Category == "INDIE")
-                           return indieColor;
+                            return indieColor;
                         else if (d.Category == "MMO")
                             return mmoColor;
                         else if (d.Category == "RACING")
                             return racingColor;
                         else if (d.Category == "RPG")
-                           return rpgColor;
+                            return rpgColor;
                         else if (d.Category == "SIMULATION")
                             return simulationColor;
                         else if (d.Category == "SPORTS")
-                          return sportsColor;
+                            return sportsColor;
                         else if (d.Category == "STRATEGY")
                             return strategyColor;
                         else
@@ -487,10 +528,8 @@
                         return d.r * 2;
                     })
                     .style("opacity", function (d) {
-                        if (zoomLevel == 2)
-                            return 1;
-                        else
-                            return 0;
+                        return showIcons ? 1 : 0;
+
 
                     })
                     .attr("xlink:href", function (d) {
@@ -502,42 +541,47 @@
 
 
                         if (d.Category == "ACTION")
-                            return "http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png";
+                            return actionIcon;
                         else if (d.Category == "ADVENTURE")
-                            return "http://icons.iconarchive.com/icons/icons8/ios7/128/Cinema-Adventures-icon.png";
+                            return adventureIcon;
                         else if (d.Category == "CASUAL")
-                            return "http://icons.iconarchive.com/icons/double-j-design/ravenna-3d/128/Poker-icon.png";
+                            return casualIcon;
                         else if (d.Category == "INDIE")
-                            return "http://icons.iconarchive.com/icons/designcontest/vintage/128/Pixel-Art-icon.png";
+                            return indieIcon;
                         else if (d.Category == "MMO")
-                            return "http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/World-icon.png";
+                            return mmoIcon;
                         else if (d.Category == "RACING")
-                            return "http://icons.iconarchive.com/icons/bartkowalski/1960-matchbox-cars/128/BRM-Racing-Car-icon.png";
+                            return racingIcon;
                         else if (d.Category == "RPG")
-                            return "http://icons.iconarchive.com/icons/chrisl21/minecraft/128/Iron-Sword-icon.png";
+                            return rpgIcon;
                         else if (d.Category == "SIMULATION")
-                            return "http://icons.iconarchive.com/icons/awicons/vista-artistic/128/2-Hot-Train-icon.png";
+                            return simulationIcon;
                         else if (d.Category == "SPORTS")
-                            return "http://icons.iconarchive.com/icons/custom-icon-design/flatastic-10/128/Sport-american-football-icon.png";
+                            return sportsIcon;
                         else if (d.Category == "STRATEGY")
-                            return "http://icons.iconarchive.com/icons/aha-soft/free-large-boss/128/Army-Officer-icon.png";
+                            return strategyIcon;
+                        else
+                            return "";
 
+                        ;
 
-
-                            return "http://icons.iconarchive.com/icons/icondrawer/black-and-blue-add-on/128/black-chess-icon.png";
-                            //return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
+                        //return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
                     })
                     .on("mouseover", function (d) {
 
                         if (d.children) // dont show outer bubbles
                             return;
 
-                        tooltip.html("<div><b>Game: </b>" + d.name +
-                                "<br/><b>Developer: </b>" + d.developer
+                        tooltip.html("<div><h2><b>Game: </b>" + d.name
+                                + "</h2><b>Developer: </b>" + d.developer
                                 + "<br/><b>Genre: </b>" + d.Category
                                 + "<br/><b>Publisher: </b>" + d.publisher
-                                + "<br/><b>Ranking: </b>" + d.score_rank
-                                + "<br/><b>Players forever: </b>" + d.players_forever
+                                + "<br/><b>Score Ranking: </b>" + d.score_rank
+                                + "<br/><b>Owners: </b>" + d.owners
+                                + "<br/><b>Average Playtime (last 2 weeks): </b>" + d.average_2weeks
+                                + "<br/><b>Players Forever: </b>" + d.players_forever
+                                + "<br/><b>Concurrent Players Peak (yesterday): </b>" + d.ccu
+                                + "<br/><b>SteamSpy ID: </b>" + d.appid
                                 + " </div>");
                         tooltip.append("img")
                                 .attr("src", "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg").attr("width", "230px")
@@ -598,7 +642,7 @@
                             return "";
                     });
             //d3.select(window).on("click", function() { zoom(root); });
-        });
+
     }
 
 
@@ -613,12 +657,12 @@
 
 
         zoomLevel = d.depth;
-        if (zoomLevel == 2)
-        return;
+        if (zoomLevel == 2) // don't zoom more in
+            return;
 
-        console.log("new zoom node: " + d.name);
-        console.log("previous root node: " + root.name);
-        console.log("zoom level: " + zoomLevel);
+        // console.log("new zoom node: " + d.name);
+        //console.log("previous root node: " + root.name);
+        //console.log("zoom level: " + zoomLevel);
 
 
         t.selectAll("circle")
@@ -668,7 +712,6 @@
 
                 .attr("width", function (d) {
 
-
                     if (zoomLevel == 2)
                         return k * d.r;
                     else
@@ -695,10 +738,8 @@
                 })
                 .style("opacity", function (d) {
 
-                    if (zoomLevel == 2 || zoomLevel == 1)
-                        return 1;
-                    else
-                        return 0;
+                    return showIcons ? 1 : 0;
+
                 });
 
 
@@ -708,10 +749,9 @@
     }
 
 
-
     function HighlightCategories(d) {
 
-        d3.selectAll(".filter_button").on("change", function() {
+        d3.selectAll(".filter_button").on("change", function () {
 
             var t = vis.transition()
                     .duration(750);
@@ -752,8 +792,8 @@
                         //console.log(d);
 
                         /*if (d.depth == 2)
-                            return notSelectedColor;
-                        */
+                         return notSelectedColor;
+                         */
                         // genre color
                         if (d.Category == "ACTION")
                             return currentActionColor;
@@ -785,7 +825,6 @@
                         return showIcons ? 1 : 0;
                     });
         });
-
 
 
     }
