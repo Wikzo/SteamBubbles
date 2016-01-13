@@ -87,7 +87,7 @@
         minimumPlayersLastTwoWeekThreshold = this.value;
     });
 
-    var minimumPlayersLastTwoWeekThreshold = 500000;
+    var minimumPlayersLastTwoWeekThreshold = 5000;
 
     // access external JSON data_old in Chrome:
     // https://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource
@@ -427,10 +427,10 @@
                         return d.r*2;
                     })
                     .style("opacity", function (d) {
-                         if (zoomLevel == 2)
-                        return 1;
-                        //else
-                        //  return 0;
+                        if (zoomLevel == 2)
+                            return 1;
+                        else
+                            return 0;
 
                     })
                     .attr("xlink:href", function (d) {
@@ -493,10 +493,8 @@
                     .attr("text-anchor", "middle")
                     .style("opacity",
                     function (d) {
-                        //if (zoomLevel == 1)
-                            return 1;
-                        //else
-                          //  return 0;
+
+                        return 1;
                     })
                     .style("font", function (d) {
                         if (d.children)
@@ -506,16 +504,11 @@
                     })
                     .text(
                     function (d) {
-                        //console.log(d.name);
-                       /* if (d.children)
+
+                        if (d.children)
                             return d.IntervalName;
                         else
-                            return d.name;*/
-
-                        if (zoomLevel == 1 || zoomLevel == 2)
-                            return d.name;
-                        else if (d.children)
-                            return d.IntervalName;
+                            return "";
                     });
             //d3.select(window).on("click", function() { zoom(root); });
         });
@@ -564,44 +557,55 @@
                 })
                 .style("opacity",
                 function (d) {
-                   /* if (zoomLevel == 2)
-                        return 1;
-                    else
-                        return 0;*/
-
                     return 1;
+
                 })
                 .style("font", function (d) {
                     if (d.children)
                         return "50px sans-serif";
                     else
-                        return "18px sans-serif"
+                        return "10px sans-serif"
                 })
                 .text(
                 function (d) {
-                    if (zoomLevel == 1 || zoomLevel == 2)
-                        return d.name;
-                    else if (d.children)
+                    if (d.children)
                         return d.IntervalName;
+                    else
+                        return "";
                 });
 
         t.selectAll("image")
 
-                .attr("width", function (d) {
-                    return k * d.r * 2;
+                .attr("width", function (d)
+                {
+
+
+                    if (zoomLevel == 2)
+                        return k * d.r;
+                    else
+                        return k * d.r*2;
                 })
                 .attr("height", function (d) {
-                    return k * d.r * 2;
+                    if (zoomLevel == 2)
+                        return k * d.r;
+                    else
+                        return k * d.r*2;
                 })
                 .attr("x", function (d) {
-                    return x(d.x - d.r);
+
+                    if (zoomLevel == 2)
+                        return x(d.x - d.r*0.5);
+                    else
+                        return x(d.x - d.r);
                 })
                 .attr("y", function (d) {
-                    return y(d.y - d.r);
+                    if (zoomLevel == 2)
+                        return y(d.y - d.r*0.5);
+                    else
+                        return y(d.y - d.r);
                 })
                 .style("opacity", function (d) {
 
-                    return 1;
                     if (zoomLevel == 2)
                         return 1;
                     else
