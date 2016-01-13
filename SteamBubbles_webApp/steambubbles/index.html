@@ -95,6 +95,8 @@
     </tr>
 </table>
 
+</br>
+</br>
 
 </div>
 
@@ -212,10 +214,25 @@
      arr.push('value1');
      arr.push('value2');*/
 
-    var allCombined;
+    d3.json("http://steamspy.com/api.php?request=genre&genre=Strategy", function(error, json) {
+        if (error)
+            Start(true);
+        else
+            Start(false);
+    });
+
+    //Start();
 
 
-    function Start() {
+    function Start(useLocalData) {
+        useLocalFiles = useLocalData;
+
+        if (useLocalFiles == true)
+            console.log("Starting, using local data");
+        else
+            console.log("Starting, using online data");
+
+
         loadingIndex = 0;
 
         if (useLocalFiles == true) {
@@ -246,16 +263,12 @@
         //console.log("loading");
         d3.json(URLs[loadingIndex].url, function (error, data) {
 
-            if (error == null)
-
-
                 var workAsArray = []; // This will be the resulting array
             for (var key in data) {
                 var entry = data[key]; // This will be each of the three graded things
                 entry.id = key; // e.g. "id": "assessment1"
 
                 if (entry.players_2weeks > minimumPlayersLastTwoWeekThreshold) {
-                    //console.log(entry);
                     workAsArray.push(entry)
 
                 }
@@ -319,28 +332,13 @@
             CheckIfAllDone();
     }
 
-    Start();
-
-
-    function TimeOutLoader() {
-        setTimeout(LoadDataFromSteamSpy, 4000);
-    }
-
 
     var circles;
     function CheckIfAllDone() {
-        //allCombined = [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData];
-
-        //console.log(allCombined);
-
-        circles = showCircles();
+        circles = DrawBubbles();
 
         HighlightCategories();
     }
-
-    var diameter = 960,
-            format = d3.format(",d"),
-            color = d3.scale.category20c();
 
     var tooltip = d3.select("body")
             .append("div")
@@ -351,7 +349,7 @@
             .style("padding", "8px")
             .style("background-color", "rgba(0, 0, 0, 0.75)")
             .style("border-radius", "6px")
-            .style("font", "12px sans-serif")
+            .style("font", "14px sans-serif")
             .text("tooltip");
 
     var w = window.innerWidth,
@@ -366,6 +364,7 @@
             .size([r, r]).sort(function (a, b) {
                 return a.score_rank - b.score_rank;
             })
+            .padding([2])
             .value(function (d) {
                 return d.score_rank;
             });
@@ -376,7 +375,7 @@
             .append("svg:g")
             .attr("transform", "translate(" + (w - r) / 2 + "," + (h - r) / 2 + ")");
 
-    function showCircles() {
+    function DrawBubbles() {
 
 
 
@@ -534,7 +533,6 @@
                     })
                     .attr("xlink:href", function (d) {
 
-                        // show steam logo for outer bubbles
 
                         if (d.children)
                             return "";//http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
@@ -562,8 +560,6 @@
                             return strategyIcon;
                         else
                             return "";
-
-                        ;
 
                         //return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
                     })
@@ -755,7 +751,6 @@
 
             var t = vis.transition()
                     .duration(750);
-
 
             var category = this.id;
             var checked = this.checked;
