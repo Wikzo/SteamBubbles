@@ -12,12 +12,17 @@
         }
 
         text {
-            font-size: 20px;
-            pointer-events: none;
+            font: 60px sans-serif;
+            color: white;
+            text-shadow:
+            -1px -1px 0 #000,
+            1px -1px 0 #000,
+            -1px 1px 0 #000,
+            1px 1px 0 #000;
         }
 
         text.parent {
-            fill: #1f77b4;
+            fill: #ff7f0e;
         }
 
         circle {
@@ -27,14 +32,15 @@
         }
 
         circle.parent {
-            fill: #1f77b4;
+            fill: #ff7f0e;
             fill-opacity: 1;
-            stroke: steelblue;
+            stroke: #ff7f0e;
+            stroke-width: 5px;
         }
 
         circle.parent:hover {
             stroke: #ff7f0e;
-            stroke-width: .5px;
+            stroke-width: 10px;
         }
 
         circle.child {
@@ -417,17 +423,11 @@
             // get all children's score rank
             root.children.forEach(function (d) {
 
-                // console.log("old:");
-                // console.log(d);
 
                 if (d.children) {
 
                     d.children.forEach(function (game) {
                         game.Category = d.Category;
-
-                        // console.log(d);
-                        // game.Category = d.name;
-                        // console.log(game);
 
                         if (game.score_rank > 90)
                             gameNode.children[0].children.push(game);
@@ -448,14 +448,11 @@
                         else
                             gameNode.children[9].children.push(game);
 
-
                     });
                 }
             });
 
             var nodes = pack.nodes(gameNode);
-            //console.log(nodes);
-
 
             vis.selectAll("circle").remove();
 
@@ -476,8 +473,7 @@
                     })
                     .style("opacity", 1)
                     .style("fill", function (d) {
-                        //console.log("here2: ");
-                        //console.log(d);
+
 
                         // genre color
                         if (d.Category == "ACTION")
@@ -529,14 +525,12 @@
                     .style("opacity", function (d) {
                         return showIcons ? 1 : 0;
 
-
                     })
                     .attr("xlink:href", function (d) {
 
 
                         if (d.children)
                             return "";//http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
-
 
                         if (d.Category == "ACTION")
                             return actionIcon;
@@ -623,12 +617,7 @@
 
                         return 1;
                     })
-                    .style("font", function (d) {
-                        if (d.children)
-                            return "50px sans-serif";
-                        else
-                            return "8px sans-serif"
-                    })
+
                     .text(
                     function (d) {
 
