@@ -52,29 +52,34 @@
 <body>
 
 
-<h1>SteamBubbles</h1>
-<button onclick="Reload()">Show fewer games</button>
-
+<h1>Steam Bubbles</h1>
+Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH ...
 <table style="width:100%">
     <tr>
         <td><label for="nAvgPlayHoursTotal"
-           style="display: inline-block; width: 240px; text-align: right">
-        Minimum average playtime:</br> <span id="nAvgPlayHoursTotal-value"></span>
-    </label>
-    <input type="range" min="1" max="100" id="nAvgPlayHoursTotal" value="5"></td>
+                   style="display: inline-block; width: 240px; text-align: right">
+            Minimum average playtime:</br> <span id="nAvgPlayHoursTotal-value"></span>
+        </label>
+            <input type="range" min="1" max="100" id="nAvgPlayHoursTotal" value="5"></td>
 
 
         <td><label for="nNumberOfPlayersLastTwoWeeks"
-           style="display: inline-block; width: 240px; text-align: right">
-        Minimum number of players during last two weeks:</br> <span id="nNumberOfPlayersLastTwoWeeks-value"></span>
-    </label>
-    <input type="range" min="10" max="500000" id="nNumberOfPlayersLastTwoWeeks" value="5000"></td>
+                   style="display: inline-block; width: 240px; text-align: right">
+            Minimum number of players during last two weeks:</br> <span id="nNumberOfPlayersLastTwoWeeks-value"></span>
+        </label>
+            <input type="range" min="10" max="500000" id="nNumberOfPlayersLastTwoWeeks" value="5000"></td>
 
         <td><label for="nOwners"
                    style="display: inline-block; width: 240px; text-align: right">
             Minimum number of total owners:</br> <span id="nOwners-value"></span>
         </label>
             <input type="range" min="100" max="5000000" id="nOwners" value="5000"></td>
+
+        <td><label for="nCCUYesterday"
+                   style="display: inline-block; width: 240px; text-align: right">
+            Minimum concurrent players (CCU) yesterday: </br> <span id="nCCUYesterday-value"></span>
+        </label>
+            <input type="range" min="1" max="30000" id="nCCUYesterday" value="500"></td>
     </tr>
 </table>
 <br class="filter_options">
@@ -159,9 +164,21 @@
         Reload();
     });
 
+    d3.select("#nCCUYesterday").on("input", function () {
+
+        minimumCCU = this.value;
+
+        d3.select("#nCCUYesterday-value").text(this.value + " players");
+
+
+        Reload();
+    });
+
+
     var minimumPlayersLastTwoWeekThreshold = 5000;
     var minimumAveragePlayTimeHours = 5;
     var minimumOwners = 100;
+    var minimumCCU = 500;
     var updating = false;
 
     // access external JSON data_old in Chrome:
@@ -263,6 +280,7 @@
         d3.select("#nAvgPlayHoursTotal-value").text(minimumAveragePlayTimeHours + " hours");
         d3.select("#nNumberOfPlayersLastTwoWeeks-value").text(minimumPlayersLastTwoWeekThreshold + " players");
         d3.select("#nOwners-value").text(minimumOwners + " owners");
+        d3.select("#nCCUYesterday-value").text(minimumCCU + " players");
 
 
         // check to use online or local data
@@ -333,7 +351,8 @@
                 if (
                         (entry.average_forever / 60) > minimumAveragePlayTimeHours
                         && entry.players_2weeks > minimumPlayersLastTwoWeekThreshold
-                && entry.owners > minimumOwners
+                        && entry.owners > minimumOwners
+                        && entry.ccu > minimumCCU
                 ) {
                     workAsArray.push(entry)
 
