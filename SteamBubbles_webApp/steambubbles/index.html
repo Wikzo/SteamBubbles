@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=UTF8">
 
@@ -12,7 +10,6 @@
         text {
             font: 20px sans-serif;
         }
-
 
         text {
             font-size: 20px;
@@ -54,16 +51,14 @@
 <button onclick="Reload()">Reload</button>
 
 
-
 <form>
     Minimum player threshold (last two weeks): <input type="text" name="firstname"><br>
     Minimum concurrent players (last two weeks): <input type="text" name="lastname">
 </form>
 
 
-
 <p>
-    <img src="http://i.imgur.com/jr4cr2A.png" />
+    <img src="http://i.imgur.com/jr4cr2A.png"/>
     <label for="nRadius"
            style="display: inline-block; width: 240px; text-align: right">
         radius = <span id="nRadius-value">...</span>
@@ -74,10 +69,7 @@
 </p>
 
 
-
 <script src="//d3js.org/d3.v3.min.js"></script>
-
-
 
 
 <script type="text/javascript">
@@ -87,43 +79,43 @@
     // https://gist.github.com/bjtucker/fd3aa6e64d565962f1c1
 
     // when the input range changes update the circle
-    d3.select("#nRadius").on("input", function() {
+    d3.select("#nRadius").on("input", function () {
         //update(+this.value);
         console.log(this.value);
 
         minimumPlayersLastTwoWeekThreshold = this.value;
     });
 
-    var minimumPlayersLastTwoWeekThreshold = 5000;
+    var minimumPlayersLastTwoWeekThreshold = 800000;
 
-    // access external JSON data in Chrome:
+    // access external JSON data_old in Chrome:
     // https://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource
 
-    var action = {name:"ACTION", url:"http://steamspy.com/api.php?request=genre&genre=Action"};
-    var adventure = {name:"ADVENTURE", url:"http://steamspy.com/api.php?request=genre&genre=Adventure"};
-    var casual = {name:"CASUAL", url:"http://steamspy.com/api.php?request=genre&genre=Casual"};
-    var indie = {name:"INDIE", url:"http://steamspy.com/api.php?request=genre&genre=Indie"};
-    var mmo = {name:"MMO", url:"http://steamspy.com/api.php?request=genre&genre=Massively"};
-    var racing = {name:"RACING", url:"http://steamspy.com/api.php?request=genre&genre=Racing"};
-    var rpg = {name:"RPG", url:"http://steamspy.com/api.php?request=genre&genre=RPG"};
-    var simulation = {name:"SIMULATION", url:"http://steamspy.com/api.php?request=genre&genre=Simulation"};
-    var sports = {name:"SPORTS", url:"http://steamspy.com/api.php?request=genre&genre=Sports"};
-    var strategy = {name:"STRATEGY", url:"http://steamspy.com/api.php?request=genre&genre=Strategy"};
+    var action = {name: "ACTION", url: "http://steamspy.com/api.php?request=genre&genre=Action"};
+    var adventure = {name: "ADVENTURE", url: "http://steamspy.com/api.php?request=genre&genre=Adventure"};
+    var casual = {name: "CASUAL", url: "http://steamspy.com/api.php?request=genre&genre=Casual"};
+    var indie = {name: "INDIE", url: "http://steamspy.com/api.php?request=genre&genre=Indie"};
+    var mmo = {name: "MMO", url: "http://steamspy.com/api.php?request=genre&genre=Massively"};
+    var racing = {name: "RACING", url: "http://steamspy.com/api.php?request=genre&genre=Racing"};
+    var rpg = {name: "RPG", url: "http://steamspy.com/api.php?request=genre&genre=RPG"};
+    var simulation = {name: "SIMULATION", url: "http://steamspy.com/api.php?request=genre&genre=Simulation"};
+    var sports = {name: "SPORTS", url: "http://steamspy.com/api.php?request=genre&genre=Sports"};
+    var strategy = {name: "STRATEGY", url: "http://steamspy.com/api.php?request=genre&genre=Strategy"};
 
     var URLs = [action, adventure, casual, indie, mmo, racing, rpg, simulation, sports, strategy];
 
     var actionData = {"children": []};
-    var adventureData ={"children": []};
+    var adventureData = {"children": []};
     var casualData = {"children": []};
     var indieData = {"children": []};
-    var mmoData ={"children": []};
-    var racingData ={"children": []};
+    var mmoData = {"children": []};
+    var racingData = {"children": []};
     var rpgData = {"children": []};
     var simulationData = {"children": []};
-    var sportsData ={"children": []};
-    var strategyData ={"children": []};
+    var sportsData = {"children": []};
+    var strategyData = {"children": []};
 
-    var useLocalFiles = true;
+    var useLocalFiles = false;
 
     /*var arr = new Array();
      // or var arr = [];
@@ -132,12 +124,10 @@
 
     var allCombined;
 
-    function Start()
-    {
+    function Start() {
         loadingIndex = 0;
 
-        if (useLocalFiles == true)
-        {
+        if (useLocalFiles == true) {
             action.url = "action.json";
             adventure.url = "adventure.json";
             casual.url = "casual.json";
@@ -153,79 +143,65 @@
         LoadDataFromSteamSpy();
     }
 
-    function Reload()
-    {
+    function Reload() {
         loadingIndex = 0;
         LoadDataFromSteamSpy();
     }
     var loadingIndex = 0;
-    function LoadDataFromSteamSpy()
-    {
+    function LoadDataFromSteamSpy() {
         console.log("loading");
         d3.json(URLs[loadingIndex].url, function (error, data) {
 
             var workAsArray = []; // This will be the resulting array
-            for(var key in data)
-            {
+            for (var key in data) {
                 var entry = data[key]; // This will be each of the three graded things
                 entry.id = key; // e.g. "id": "assessment1"
 
-                if (entry.players_2weeks > minimumPlayersLastTwoWeekThreshold)
-                {
+                if (entry.players_2weeks > minimumPlayersLastTwoWeekThreshold) {
                     //console.log(entry);
                     workAsArray.push(entry)
 
                 }
             }
 
-            if (loadingIndex == 0)
-            {
+            if (loadingIndex == 0) {
                 actionData.children = workAsArray;
                 actionData.Category = URLs[loadingIndex].name;
             }
 
-            else if (loadingIndex == 1)
-            {
+            else if (loadingIndex == 1) {
                 adventureData.children = workAsArray;
                 adventureData.Category = URLs[loadingIndex].name;
             }
-            else if (loadingIndex == 2)
-            {
+            else if (loadingIndex == 2) {
                 casualData.children = workAsArray;
                 casualData.Category = URLs[loadingIndex].name;
             }
-            else if (loadingIndex == 3)
-            {
+            else if (loadingIndex == 3) {
                 indieData.children = workAsArray;
                 indieData.Category = URLs[loadingIndex].name;
             }
-            else if (loadingIndex == 4)
-            {
+            else if (loadingIndex == 4) {
                 mmoData.children = workAsArray;
                 mmoData.Category = URLs[loadingIndex].name;
             }
-            else if (loadingIndex == 5)
-            {
+            else if (loadingIndex == 5) {
                 racingData.children = workAsArray;
                 racingData.Category = URLs[loadingIndex].name;
             }
-            else if (loadingIndex == 6)
-            {
+            else if (loadingIndex == 6) {
                 rpgData.children = workAsArray;
                 rpgData.Category = URLs[loadingIndex].name;
             }
-            else if (loadingIndex == 7)
-            {
+            else if (loadingIndex == 7) {
                 simulationData.children = workAsArray;
                 simulationData.Category = URLs[loadingIndex].name;
             }
-            else if (loadingIndex == 8)
-            {
+            else if (loadingIndex == 8) {
                 sportsData.children = workAsArray;
                 sportsData.Category = URLs[loadingIndex].name;
             }
-            else if (loadingIndex == 9)
-            {
+            else if (loadingIndex == 9) {
                 strategyData.children = workAsArray;
                 strategyData.Category = URLs[loadingIndex].name;
             }
@@ -236,8 +212,7 @@
         });
     }
 
-    function DoneLoading(dataToStore)
-    {
+    function DoneLoading(dataToStore) {
         console.log(URLs[loadingIndex].name + " done");
         loadingIndex++;
 
@@ -250,16 +225,12 @@
     Start();
 
 
-
-
-    function TimeOutLoader()
-    {
+    function TimeOutLoader() {
         setTimeout(LoadDataFromSteamSpy, 4000);
     }
 
 
-    function CheckIfAllDone()
-    {
+    function CheckIfAllDone() {
         //allCombined = [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData];
 
         //console.log(allCombined);
@@ -292,10 +263,12 @@
             root;
 
     var pack = d3.layout.pack()
-            .size([r, r]).sort(function(a, b) {
+            .size([r, r]).sort(function (a, b) {
                 return a.score_rank - b.score_rank;
             })
-            .value(function(d) { return d.score_rank; });
+            .value(function (d) {
+                    return d.score_rank;
+            });
 
     var vis = d3.select("body").insert("svg:svg", "h2")
             .attr("width", w)
@@ -309,7 +282,10 @@
             if (error) throw error;
             node = root = data;
 
-            var games1 = {"name": "GAMES_1", "children": [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData]};
+            var games1 = {
+                "name": "GAMES_1",
+                "children": [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData]
+            };
             root = games1;
 
             var b100 = {"children": []};
@@ -448,6 +424,9 @@
                     .style("opacity", function (d) {
                         //return 1;
                         // only show for zoomed in
+
+                        return 1;
+
                         return d.r > 20 ? 1 : 0;
 
                         // only show images for inner bubbles
@@ -466,16 +445,14 @@
 
                         // show steam logo for outer bubbles
 
-                        /* if (d.children)
-                         return "http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
-
-                         return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";*/
+                        if (d.children)
+                            return "http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
+                        else
+                            return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
                     })
-                    .on("mouseover", function(d){
+                    .on("mouseover", function (d) {
 
-                        if (d.
-
-                                        children) // dont show outer bubbles
+                        if (d.children) // dont show outer bubbles
                             return;
 
                         tooltip.html("<div><b>Game: </b>" + d.name +
@@ -484,50 +461,64 @@
                                 + "<br/><b>Publisher: </b>" + d.publisher
                                 + "<br/><b>Ranking: </b>" + d.score_rank
                                 + "<br/><b>Players forever: </b>" + d.players_forever
-                                +" </div>");
+                                + " </div>");
                         tooltip.append("img")
-                                .attr("src","http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg").attr("width","230px")
+                                .attr("src", "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg").attr("width", "230px")
                                 .attr("height",
                                 "107.5px");
                         tooltip.style("visibility", "visible");
                     })
-                    .on("mousemove", function() {
-                        return tooltip.style("top", ( d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+                    .on("mousemove", function () {
+                        return tooltip.style("top", ( d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px");
                     })
                     .on("mouseout",
-                    function(){return tooltip.style("visibility",
-                            "hidden");})
+                    function () {
+                        return tooltip.style("visibility",
+                                "hidden");
+                    })
                     .on("click",
-                    function(d) { return zoom(node == d ?
-                            root : d); });
+                    function (d) {
+                        return zoom(node == d ?
+                                root : d);
+                    });
 
             vis.selectAll("text")
                     .data(nodes)
                     .enter().append("svg:text")
                     .attr("class",
-                    function(d) { return d.children ? "parent" :
-                            "child"; })
+                    function (d) {
+                        return d.children ? "parent" :
+                                "child";
+                    })
                     .attr("x",
-                    function(d) {
-                        return d.x; })
+                    function (d) {
+                        return d.x;
+                    })
                     .attr("y",
-                    function(d) {
-                        return d.y; })
+                    function (d) {
+                        return d.y;
+                    })
                     .attr("dy", ".35em")
                     .attr("text-anchor", "middle")
                     .style("opacity",
-                    function(d) { return d.r > 20
-                            ? 1 : 0; })
-                    .style("font", function(d)
-                    {
+                    function (d) {
+                        return d.r > 20
+                                ? 1 : 1;
+                    })
+                    .style("font", function (d) {
                         if (d.children)
                             return "50px sans-serif";
                         else
-                            return "52px sans-serif"
+                            return "8px sans-serif"
                     })
                     .text(
-                    function(d) { return d.
-                            IntervalName; })
+                    function (d) {
+                        //console.log(d.name);
+                        if (d.children)
+                            return d.IntervalName;
+                        else
+                            return d.name;
+                    })
 
             ;
             //d3.select(window).on("click", function() { zoom(root); });
@@ -542,18 +533,24 @@
         var t = vis.transition()
                 .duration(d3.event.altKey ? 7500 : 750);
 
-        //console.log(d.r);
-
 
         t.selectAll("image")
-                .attr("x", function(d) { return x(d.x); }) // <-- offset images correctly??
-                .attr("y", function(d) { return y(d.y); }) // <-- offset images correctly??
+                .attr("x", function (d) {
+                    return x(d.x);
+                }) // <-- offset images correctly??
+                .attr("y", function (d) {
+                    return y(d.y);
+                }) // <-- offset images correctly??
             //.attr("r", function(d) { return k * d.r; })
-                .attr("width", function(d) { return k*d.r; })
-                .attr("height", function(d) { return k*d.r; })
-                .style("opacity", function(d)
-                {
+                .attr("width", function (d) {
+                    return k * d.r;
+                })
+                .attr("height", function (d) {
+                    return k * d.r;
+                })
+                .style("opacity", function (d) {
 
+                    return 1;
                     // only show when zoomed in
                     //console.log(k * d.r);
                     return k * d.r > 200 ? 1 : 0;
@@ -574,17 +571,27 @@
                      return 0;*/
                 });
 
-
-
         t.selectAll("circle")
-                .attr("cx", function(d) { return x(d.x); })
-                .attr("cy", function(d) { return y(d.y); })
-                .attr("r", function(d) { return k * d.r; });
+                .attr("cx", function (d) {
+                    return x(d.x);
+                })
+                .attr("cy", function (d) {
+                    return y(d.y);
+                })
+                .attr("r", function (d) {
+                    return k * d.r;
+                });
 
         t.selectAll("text")
-                .attr("x", function(d) { return x(d.x); })
-                .attr("y", function(d) { return y(d.y); })
-                .style("opacity", function(d) { return k * d.r > 20 ? 1 : 0; });
+                .attr("x", function (d) {
+                    return x(d.x);
+                })
+                .attr("y", function (d) {
+                    return y(d.y);
+                })
+                .style("opacity", function (d) {
+                    return k * d.r > 20 ? 1 : 0;
+                });
 
         node = d;
         d3.event.stopPropagation();
