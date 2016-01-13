@@ -1,4 +1,3 @@
-// cannot zoom out?
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=UTF8">
 
@@ -69,6 +68,18 @@
 
 </p>
 
+<div class="filter_options">
+    <input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
+    <input class="filter_button" id="adventure_button" type="checkbox" checked>Adventure</input>
+    <input class="filter_button" id="casual_button" type="checkbox" checked>Casual</input>
+    <input class="filter_button" id="indie_button" type="checkbox"checked >Indie</input>
+    <input class="filter_button" id="mmo_button" type="checkbox"checked >MMO</input>
+    <input class="filter_button" id="racing_button" type="checkbox" checked>Racing</input>
+    <input class="filter_button" id="rpg_button" type="checkbox" checked>RPG</input>
+    <input class="filter_button" id="simulation_button" type="checkbox" checked >Simulation</input>
+    <input class="filter_button" id="sports_button" type="checkbox" checked>Sports</input>
+    <input class="filter_button" id="strategy_button" type="checkbox" checked>Strategy</input>
+</div>
 
 <script src="//d3js.org/d3.v3.min.js"></script>
 
@@ -120,12 +131,60 @@
     var zoomLevel = 0;
     var superRoot;
 
+    var actionColor = '#9b2f3a';
+    var adventureColor = '#576c5e';
+    var casualColor = '#dac5a8';
+    var indieColor = '#93794d';
+    var mmoColor = '#1a3f75';
+    var racingColor = '#093640';
+    var rpgColor = '#04b2d9';
+    var simulationColor = '#f28f38';
+    var sportsColor = '#f2be5c';
+    var strategyColor = '#f2766b';
+    var defaultColor = "#ffffff";
+    var notSelectedColor = "#5f5f5f";
+
+    var currentActionColor = '#9b2f3a';
+    var currentAdventureColor = '#576c5e';
+    var currentCasualColor = '#dac5a8';
+    var currentIndieColor = '#93794d';
+    var currentMmoColor = '#1a3f75';
+    var currentRacingColor = '#093640';
+    var currentRpgColor = '#04b2d9';
+    var currentSimulationColor = '#f28f38';
+    var currentSportsColor = '#f2be5c';
+    var currentStrategyColor = '#f2766b';
+
+    var showAction = true;
+    var showCasual = true;
+    var showIndie = true;
+    var showMMO = true;
+    var showRacing = true;
+    var showRPG = true;
+    var showSimulation = true;
+    var showSports = true;
+    var showStrategy = true;
+
+
+    var adventureColor = '#576c5e';
+    var casualColor = '#dac5a8';
+    var indieColor = '#93794d';
+    var mmoColor = '#1a3f75';
+    var racingColor = '#093640';
+    var rpgColor = '#04b2d9';
+    var simulationColor = '#f28f38';
+    var sportsColor = '#f2be5c';
+    var strategyColor = '#f2766b';
+    var defaultColor = "#ffffff";
+    var notSelectedColor = "#5f5f5f";
+
     /*var arr = new Array();
      // or var arr = [];
      arr.push('value1');
      arr.push('value2');*/
 
     var allCombined;
+
 
     function Start() {
         loadingIndex = 0;
@@ -146,16 +205,22 @@
         LoadDataFromSteamSpy();
     }
 
+
     function Reload() {
         loadingIndex = 0;
-        LoadDataFromSteamSpy();
+        circles = null;
+        minimumPlayersLastTwoWeekThreshold = minimumPlayersLastTwoWeekThreshold * 2;
+        Start();
     }
     var loadingIndex = 0;
     function LoadDataFromSteamSpy() {
         console.log("loading");
         d3.json(URLs[loadingIndex].url, function (error, data) {
 
-            var workAsArray = []; // This will be the resulting array
+            if (error == null)
+
+
+                var workAsArray = []; // This will be the resulting array
             for (var key in data) {
                 var entry = data[key]; // This will be each of the three graded things
                 entry.id = key; // e.g. "id": "assessment1"
@@ -233,12 +298,15 @@
     }
 
 
+    var circles;
     function CheckIfAllDone() {
         //allCombined = [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData];
 
         //console.log(allCombined);
 
-        showCircles();
+        circles = showCircles();
+
+        //HighlightCategories();
     }
 
     var diameter = 960,
@@ -316,7 +384,7 @@
 
             var gameNode = {"name": "GAMES_2", "children": [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
 
-            superRoot= gameNode;
+            superRoot = gameNode;
 
             // get all children's score rank
             root.children.forEach(function (d) {
@@ -361,6 +429,8 @@
             //console.log(nodes);
 
 
+            vis.selectAll("circle").remove();
+
             vis.selectAll("circle")
                     .data(nodes)
                     .enter().append("svg:circle")
@@ -383,33 +453,35 @@
 
                         // genre color
                         if (d.Category == "ACTION")
-                            return '#9b2f3a';
+                            return actionColor;
                         else if (d.Category == "ADVENTURE")
-                            return '#576c5e';
+                            return adventureColor;
                         else if (d.Category == "CASUAL")
-                            return '#dac5a8';
+                           return casualColor;
                         else if (d.Category == "INDIE")
-                            return '#93794d';
+                           return indieColor;
                         else if (d.Category == "MMO")
-                            return '#1a3f75';
+                            return mmoColor;
                         else if (d.Category == "RACING")
-                            return '#093640';
+                            return racingColor;
                         else if (d.Category == "RPG")
-                            return '#04b2d9';
+                           return rpgColor;
                         else if (d.Category == "SIMULATION")
-                            return '#f28f38';
+                            return simulationColor;
                         else if (d.Category == "SPORTS")
-                            return '#f2be5c';
+                          return sportsColor;
                         else if (d.Category == "STRATEGY")
-                            return '#f2766b';
+                            return strategyColor;
                         else
-                            return "#ffffff";
+                            return defaultColor;
 
                     })
                     .on("click", function (d) {
                         return zoom(node == d ? root : d);
                     });
 
+
+            vis.selectAll("image").remove();
 
             vis.selectAll("image")
                     .data(nodes)
@@ -421,10 +493,10 @@
                         return d.y - d.r;
                     })
                     .attr("width", function (d) {
-                        return d.r*2;
+                        return d.r * 2;
                     })
                     .attr("height", function (d) {
-                        return d.r*2;
+                        return d.r * 2;
                     })
                     .style("opacity", function (d) {
                         if (zoomLevel == 2)
@@ -472,6 +544,8 @@
                     function (d) {
                         return zoom(node == d ? superRoot : d);
                     });
+
+            vis.selectAll("text").remove();
 
             vis.selectAll("text")
                     .data(nodes)
@@ -531,7 +605,6 @@
         console.log("zoom level: " + zoomLevel);
 
 
-
         t.selectAll("circle")
                 .attr("cx", function (d) {
                     return x(d.x);
@@ -544,15 +617,16 @@
                 });
 
 
-
         t.selectAll("text")
-                .attr("x", function(d) { return x(d.x); })
-                .attr("y", function(d) {
+                .attr("x", function (d) {
+                    return x(d.x);
+                })
+                .attr("y", function (d) {
 
-                   // if (zoomLevel == 2)
-                     //   return y(d.y - 40);
+                    // if (zoomLevel == 2)
+                    //   return y(d.y - 40);
                     //else
-                        return y(d.y);
+                    return y(d.y);
 
                 })
                 .style("opacity",
@@ -576,31 +650,30 @@
 
         t.selectAll("image")
 
-                .attr("width", function (d)
-                {
+                .attr("width", function (d) {
 
 
                     if (zoomLevel == 2)
                         return k * d.r;
                     else
-                        return k * d.r*2;
+                        return k * d.r * 2;
                 })
                 .attr("height", function (d) {
                     if (zoomLevel == 2)
                         return k * d.r;
                     else
-                        return k * d.r*2;
+                        return k * d.r * 2;
                 })
                 .attr("x", function (d) {
 
                     if (zoomLevel == 2)
-                        return x(d.x - d.r*0.5);
+                        return x(d.x - d.r * 0.5);
                     else
                         return x(d.x - d.r);
                 })
                 .attr("y", function (d) {
                     if (zoomLevel == 2)
-                        return y(d.y - d.r*0.5);
+                        return y(d.y - d.r * 0.5);
                     else
                         return y(d.y - d.r);
                 })
@@ -616,6 +689,82 @@
         root = d;
         node = d;
         d3.event.stopPropagation();
+    }
+
+
+
+    function HighlightCategories(d) {
+
+        d3.selectAll(".filter_button").on("change", function() {
+
+            var t = vis.transition()
+                    .duration(750);
+
+            console.log(this.checked);
+
+            var category = this.id;
+            var checked = this.checked;
+
+            //    return zoom(node == d ? root : d);
+
+            if (category == "action_button")
+                currentActionColor = (checked ? actionColor : notSelectedColor);
+            else if (category == "adventure_button")
+                currentAdventureColor = (checked ? adventureColor : notSelectedColor);
+            else if (category == "casual_button")
+                currentCasualColor = (checked ? casualColor : notSelectedColor);
+            else if (category == "indie_button")
+                currentIndieColor = (checked ? indieColor : notSelectedColor);
+            else if (category == "mmo_button")
+                currentMmoColor = (checked ? mmoColor : notSelectedColor);
+            else if (category == "racing_button")
+                currentRacingColor = (checked ? racingColor : notSelectedColor);
+            else if (category == "rpg_button")
+                currentRpgColor = (checked ? rpgColor : notSelectedColor);
+            else if (category == "simulation_button")
+                currentSimulationColor = (checked ? simulationColor : notSelectedColor);
+            else if (category == "sports_button")
+                currentSportsColor = (checked ? sportsColor : notSelectedColor);
+            else if (category == "strategy_button")
+                currentStrategyColor = (checked ? strategyColor : notSelectedColor);
+
+            t.selectAll("circle")
+                    .style("fill", function (d) {
+                        //console.log("here2: ");
+                        //console.log(d);
+
+                        /*if (d.depth == 2)
+                            return notSelectedColor;
+                        */
+                        // genre color
+                        if (d.Category == "ACTION")
+                            return currentActionColor;
+                        else if (d.Category == "ADVENTURE")
+                            return currentAdventureColor;
+                        else if (d.Category == "CASUAL")
+                            return currentCasualColor;
+                        else if (d.Category == "INDIE")
+                            return currentIndieColor;
+                        else if (d.Category == "MMO")
+                            return currentMmoColor;
+                        else if (d.Category == "RACING")
+                            return currentRacingColor;
+                        else if (d.Category == "RPG")
+                            return currentRpgColor;
+                        else if (d.Category == "SIMULATION")
+                            return currentSimulationColor;
+                        else if (d.Category == "SPORTS")
+                            return currentSportsColor;
+                        else if (d.Category == "STRATEGY")
+                            return currentStrategyColor;
+                        else
+                            return defaultColor;
+
+                    });
+        });
+
+
+
     }
 
 </script>
