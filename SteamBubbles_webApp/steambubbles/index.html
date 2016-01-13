@@ -7,7 +7,7 @@
         function unhide(divID) {
             var item = document.getElementById(divID);
             if (item) {
-                item.className=(item.className=='hidden')?'unhidden':'hidden';
+                item.className = (item.className == 'hidden') ? 'unhidden' : 'hidden';
             }
         }
     </script>
@@ -57,8 +57,13 @@
             pointer-events: none;
         }
 
-        .hidden { display: none; }
-        .unhidden { display: block; }
+        .hidden {
+            display: none;
+        }
+
+        .unhidden {
+            display: block;
+        }
 
     </style>
 </head>
@@ -67,22 +72,38 @@
 
 
 <h1>SteamBubbles</h1>
-Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH. Click to zoom and hover with the mouse to reveal data about each game. <a href="javascript:unhide('about');">Click here to read more about this project ...</a></br>
+Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH. <b>Click to zoom</b> and <b>hover with the mouse</b>
+to reveal data about each game. <a href="javascript:unhide('about');">Click here to read more about this
+    project.</a></br>
 
 <div id="col1">
-       </br> <a href="javascript:unhide('filters');">Show filter options</a>
-       </br> <a href="javascript:unhide('genres');">Show genre options</a>
+    </br> <a href="javascript:unhide('filters');">Show filter options</a>
+    </br> <a href="javascript:unhide('genres');">Show genre options</a>
 </div>
 <div id="col2">
     <div id="about" class="hidden">
-        <p><b>SteamBubbles</b></b> was created as part of a university course we had called <i>Information Visualization</i>.
-        </br></br>It utilizes a free API provided by <a href="http://steamspy.com/">SteamSpy</a> to access data from the Steam database.
-        </br>The course was about how to visualize information in new and intuitive ways. The original SteamSpy website is great, but it might be difficult to jump into if you don't know what you are looking for.
-        </br>In other words, it can be difficult to get an overview. That's why we decided to organize and visualize its data using bubbles.
-        </br></br>Having very limited experience with web development, we decided to use a JavaScript library called <a href="http://d3js.org/">D3.js</a> to draw the bubbles.
-        </br>The outer bubbles are organized by player reviews, while the inner bubbles themselves are color-coded by their genre.
-        </br>Using various filters, it is then possible to get an overview of the games.
-        <br><br>NOTE: The data is not 100% accurate (read more <a href="http://steamspy.com/about">here</a>). Also, some games are part of multiple genres, which means they will show up in multiple bubbles.
+        <p><b>SteamBubbles</b></b> was created as part of a university course we had called <i>Information
+            Visualization</i> in Winter 2015/2016.
+            </br></br>It utilizes a free API provided by <a href="http://steamspy.com/">SteamSpy</a> to access data from
+            the Steam database.
+            </br>The course was about how to visualize information in new and intuitive ways. The original SteamSpy
+            website is great, but it might be difficult to jump into if you don't know what you are looking for.
+            </br>In other words, it can be difficult to get an overview. That's why we decided to organize and visualize
+            its data using bubbles.
+            </br></br>Having very limited experience with web development, we decided to use a JavaScript library called
+            <a href="http://d3js.org/">D3.js</a> to draw the bubbles.
+            </br>The outer bubbles are organized by player reviews, while the inner bubbles themselves are color-coded
+            by their genre.
+            </br>Using various filters, it is then possible to get an overview of the games.
+            <br><br>NOTE 1: The data is not 100% accurate (read more <a href="http://steamspy.com/about">here</a>).
+            Also, some games are part of multiple genres, which means they will show up in multiple bubbles.
+            </br>NOTE 2: Most modern browsers do not allow cross-domain requests (read details <a
+                    href="https://github.com/mbostock/d3/wiki/Requests">here</a>), which means that we cannot fetch the
+            JSON files from the SteamSpy website dynamically.
+            </br>There are two options: a) download and use stored JSON files (which of course will be outdated) or b) use a browser plugin
+            such as <a
+                    href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi">Allow-Control-Allow-Origin</a>
+            for Chrome.
         </p>
     </div>
     <div id="filters" class="hidden">
@@ -97,7 +118,8 @@ Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH. Click to zoom
 
                 <td><label for="nNumberOfPlayersLastTwoWeeks"
                            style="font-weight:bold">
-                    Minimum number of players during last two weeks:</br> <span id="nNumberOfPlayersLastTwoWeeks-value"></span>
+                    Minimum number of players during last two weeks:</br> <span
+                        id="nNumberOfPlayersLastTwoWeeks-value"></span>
                 </label>
                     <input type="range" min="10" max="500000" id="nNumberOfPlayersLastTwoWeeks" value="5000"></td>
 
@@ -108,7 +130,7 @@ Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH. Click to zoom
                     <input type="range" min="100" max="5000000" id="nOwners" value="5000"></td>
 
                 <td><label for="nCCUYesterday"
-                    style="font-weight:bold">
+                           style="font-weight:bold">
                     Minimum concurrent players (CCU) yesterday: </br> <span id="nCCUYesterday-value"></span>
                 </label>
                     <input type="range" min="1" max="100000" id="nCCUYesterday" value="500"></td>
@@ -122,42 +144,52 @@ Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH. Click to zoom
                 <td><input class="filter_button" id="icons_button" type="checkbox">Display Icons</input></td>
 
                 <td><input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
-                    </br><img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    </br><img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                              height="42"
                               width="42"></td>
                 <td><input class="filter_button" id="adventure_button" type="checkbox" checked>Adventure</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
                 <td><input class="filter_button" id="casual_button" type="checkbox" checked>Casual</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
                 <td><input class="filter_button" id="indie_button" type="checkbox" checked>Indie</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
                 <td><input class="filter_button" id="mmo_button" type="checkbox" checked>MMO</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
                 <td><input class="filter_button" id="racing_button" type="checkbox" checked>Racing</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
                 <td><input class="filter_button" id="rpg_button" type="checkbox" checked>RPG</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
                 <td><input class="filter_button" id="simulation_button" type="checkbox" checked>Simulation</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
                 <td><input class="filter_button" id="sports_button" type="checkbox" checked>Sports</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
                 <td><input class="filter_button" id="strategy_button" type="checkbox" checked>Strategy</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
+                         height="42"
                          width="42"></td>
 
 
             </tr>
         </table>
-        </div>
+    </div>
 </div>
-<br style="clear: both;" />
+<br style="clear: both;"/>
 
 </br>
 
