@@ -118,6 +118,7 @@
 
     var useLocalFiles = true;
     var zoomLevel = 0;
+    var superRoot;
 
     /*var arr = new Array();
      // or var arr = [];
@@ -290,6 +291,7 @@
             };
             root = games1;
 
+
             var b100 = {"children": []};
             var b90 = {"children": []};
             var b80 = {"children": []};
@@ -314,6 +316,7 @@
 
             var gameNode = {"name": "GAMES_2", "children": [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
 
+            superRoot= gameNode;
 
             // get all children's score rank
             root.children.forEach(function (d) {
@@ -412,19 +415,19 @@
                     .data(nodes)
                     .enter().append("svg:image")
                     .attr("x", function (d) {
-                        return d.x - 10;
+                        return d.x - d.r;
                     })
                     .attr("y", function (d) {
-                        return d.y - 10;
+                        return d.y - d.r;
                     })
                     .attr("width", function (d) {
-                        return d.r;
+                        return d.r*2;
                     })
                     .attr("height", function (d) {
-                        return d.r;
+                        return d.r*2;
                     })
                     .style("opacity", function (d) {
-                        // if (zoomLevel == 2)
+                         if (zoomLevel == 2)
                         return 1;
                         //else
                         //  return 0;
@@ -435,7 +438,7 @@
                         // show steam logo for outer bubbles
 
                         if (d.children)
-                            return "http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
+                            return "";//http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
                         else
                             return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
                     })
@@ -444,7 +447,7 @@
                         if (d.children) // dont show outer bubbles
                             return;
 
-                        tooltip.html("<div><b>IMAGE Game: </b>" + d.name +
+                        tooltip.html("<div><b>Game: </b>" + d.name +
                                 "<br/><b>Developer: </b>" + d.developer
                                 + "<br/><b>Genre: </b>" + d.Category
                                 + "<br/><b>Publisher: </b>" + d.publisher
@@ -467,8 +470,7 @@
                     })
                     .on("click",
                     function (d) {
-                        return zoom(node == d ?
-                                root : d);
+                        return zoom(node == d ? superRoot : d);
                     });
 
             vis.selectAll("text")
@@ -531,6 +533,8 @@
 
 
         zoomLevel = d.depth;
+        console.log("new zoom node: " + d.name);
+        console.log("previous root node: " + root.name);
         console.log("zoom level: " + zoomLevel);
 
 
@@ -584,17 +588,16 @@
         t.selectAll("image")
 
                 .attr("width", function (d) {
-                    return k * d.r;
+                    return k * d.r * 2;
                 })
                 .attr("height", function (d) {
-                    return k * d.r;
+                    return k * d.r * 2;
                 })
                 .attr("x", function (d) {
-                    console.log(k * d.r);
-                    return x(d.x - 20);
+                    return x(d.x - d.r);
                 })
                 .attr("y", function (d) {
-                    return y(d.y - 20);
+                    return y(d.y - d.r);
                 })
                 .style("opacity", function (d) {
 
@@ -607,6 +610,7 @@
 
 
         root = d;
+        node = d;
         d3.event.stopPropagation();
     }
 
