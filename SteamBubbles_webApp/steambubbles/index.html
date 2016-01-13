@@ -48,25 +48,10 @@
 
 
 <h1>SteamBubbles</h1>
-<button onclick="Reload()">Reload</button>
+<button onclick="Reload()">Show fewer games</button>
 
 
-<form>
-    Minimum player threshold (last two weeks): <input type="text" name="firstname"><br>
-    Minimum concurrent players (last two weeks): <input type="text" name="lastname">
-</form>
 
-
-<p>
-    <img src="http://i.imgur.com/jr4cr2A.png"/>
-    <label for="nRadius"
-           style="display: inline-block; width: 240px; text-align: right">
-        radius = <span id="nRadius-value">...</span>
-    </label>
-    <input type="range" min="1000" max="10000" id="nRadius">
-
-
-</p>
 
 <div class="filter_options">
     <input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
@@ -306,7 +291,7 @@
 
         circles = showCircles();
 
-        //HighlightCategories();
+        HighlightCategories();
     }
 
     var diameter = 960,
