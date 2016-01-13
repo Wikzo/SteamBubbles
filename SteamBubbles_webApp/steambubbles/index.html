@@ -55,23 +55,28 @@
 <h1>SteamBubbles</h1>
 <button onclick="Reload()">Show fewer games</button>
 
-
-<p>
-    <label for="nAvgPlayHoursTotal"
+<table style="width:100%">
+    <tr>
+        <td><label for="nAvgPlayHoursTotal"
            style="display: inline-block; width: 240px; text-align: right">
         Minimum average playtime:</br> <span id="nAvgPlayHoursTotal-value"></span>
     </label>
-    <input type="range" min="1" max="100" id="nAvgPlayHoursTotal" value="5">
-</p>
+    <input type="range" min="1" max="100" id="nAvgPlayHoursTotal" value="5"></td>
 
-<p>
-    <label for="nNumberOfPlayersLastTwoWeeks"
+
+        <td><label for="nNumberOfPlayersLastTwoWeeks"
            style="display: inline-block; width: 240px; text-align: right">
         Minimum number of players during last two weeks:</br> <span id="nNumberOfPlayersLastTwoWeeks-value"></span>
     </label>
-    <input type="range" min="10" max="500000" id="nNumberOfPlayersLastTwoWeeks" value="5000">
-</p>
+    <input type="range" min="10" max="500000" id="nNumberOfPlayersLastTwoWeeks" value="5000"></td>
 
+        <td><label for="nOwners"
+                   style="display: inline-block; width: 240px; text-align: right">
+            Minimum number of total owners:</br> <span id="nOwners-value"></span>
+        </label>
+            <input type="range" min="100" max="5000000" id="nOwners" value="5000"></td>
+    </tr>
+</table>
 <br class="filter_options">
 
 <p><b>Genres Filters:</b></p>
@@ -144,8 +149,19 @@
     });
 
 
+    d3.select("#nOwners").on("input", function () {
+
+        minimumOwners = this.value;
+
+        d3.select("#nOwners-value").text(this.value + " owners");
+
+
+        Reload();
+    });
+
     var minimumPlayersLastTwoWeekThreshold = 5000;
     var minimumAveragePlayTimeHours = 5;
+    var minimumOwners = 100;
     var updating = false;
 
     // access external JSON data_old in Chrome:
@@ -246,6 +262,8 @@
         // set sliders
         d3.select("#nAvgPlayHoursTotal-value").text(minimumAveragePlayTimeHours + " hours");
         d3.select("#nNumberOfPlayersLastTwoWeeks-value").text(minimumPlayersLastTwoWeekThreshold + " players");
+        d3.select("#nOwners-value").text(minimumOwners + " owners");
+
 
         // check to use online or local data
         d3.json("https://steamspy.com/api.php?request=genre&genre=Strategy", function (error, json) {
@@ -315,6 +333,7 @@
                 if (
                         (entry.average_forever / 60) > minimumAveragePlayTimeHours
                         && entry.players_2weeks > minimumPlayersLastTwoWeekThreshold
+                && entry.owners > minimumOwners
                 ) {
                     workAsArray.push(entry)
 
@@ -400,8 +419,8 @@
             .text("tooltip");
 
     var w = window.innerWidth,
-            h = window.innerWidth,
-            r = window.innerWidth,
+            h = window.innerWidth * 0.95,
+            r = window.innerWidth * 0.95,
             x = d3.scale.linear().range([0, r]),
             y = d3.scale.linear().range([0, r]),
             node,
