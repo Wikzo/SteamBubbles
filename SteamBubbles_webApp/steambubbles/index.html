@@ -64,6 +64,7 @@
     <input class="filter_button" id="simulation_button" type="checkbox" checked >Simulation</input>
     <input class="filter_button" id="sports_button" type="checkbox" checked>Sports</input>
     <input class="filter_button" id="strategy_button" type="checkbox" checked>Strategy</input>
+    <input class="filter_button" id="icons_button" type="checkbox" checked>Show icons</input>
 </div>
 
 <script src="//d3js.org/d3.v3.min.js"></script>
@@ -127,7 +128,7 @@
     var sportsColor = '#f2be5c';
     var strategyColor = '#f2766b';
     var defaultColor = "#ffffff";
-    var notSelectedColor = "#5f5f5f";
+    var notSelectedColor = "#000000";
 
     var currentActionColor = '#9b2f3a';
     var currentAdventureColor = '#576c5e';
@@ -139,6 +140,8 @@
     var currentSimulationColor = '#f28f38';
     var currentSportsColor = '#f2be5c';
     var currentStrategyColor = '#f2766b';
+
+    var showIcons = true;
 
     var showAction = true;
     var showCasual = true;
@@ -610,6 +613,9 @@
 
 
         zoomLevel = d.depth;
+        if (zoomLevel == 2)
+        return;
+
         console.log("new zoom node: " + d.name);
         console.log("previous root node: " + root.name);
         console.log("zoom level: " + zoomLevel);
@@ -710,10 +716,12 @@
             var t = vis.transition()
                     .duration(750);
 
-            console.log(this.checked);
 
             var category = this.id;
             var checked = this.checked;
+
+            if (category == "icons_button")
+                showIcons = checked;
 
             //    return zoom(node == d ? root : d);
 
@@ -770,6 +778,11 @@
                         else
                             return defaultColor;
 
+                    });
+
+            t.selectAll("image")
+                    .style("opacity", function (d) {
+                        return showIcons ? 1 : 0;
                     });
         });
 
