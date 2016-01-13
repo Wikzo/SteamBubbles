@@ -1,3 +1,4 @@
+// cannot zoom out?
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=UTF8">
 
@@ -86,7 +87,7 @@
         minimumPlayersLastTwoWeekThreshold = this.value;
     });
 
-    var minimumPlayersLastTwoWeekThreshold = 800000;
+    var minimumPlayersLastTwoWeekThreshold = 500000;
 
     // access external JSON data_old in Chrome:
     // https://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource
@@ -116,6 +117,7 @@
     var strategyData = {"children": []};
 
     var useLocalFiles = true;
+    var zoomLevel = 0;
 
     /*var arr = new Array();
      // or var arr = [];
@@ -400,7 +402,7 @@
                         else
                             return "#ffffff";
 
-                    }) // <--------- COLOR
+                    })
                     .on("click", function (d) {
                         return zoom(node == d ? root : d);
                     });
@@ -422,23 +424,10 @@
                         return d.r;
                     })
                     .style("opacity", function (d) {
-                        //return 1;
-                        // only show for zoomed in
-
+                        // if (zoomLevel == 2)
                         return 1;
-
-                        return d.r > 20 ? 1 : 0;
-
-                        // only show images for inner bubbles
-                        return d.children ? 0 : 1;
-                        // return 0;
-                        //console.log(k);
-
-
-                        if (d.r >= 5)
-                            return 1;
-                        else
-                            return 0;
+                        //else
+                        //  return 0;
 
                     })
                     .attr("xlink:href", function (d) {
@@ -455,7 +444,7 @@
                         if (d.children) // dont show outer bubbles
                             return;
 
-                        tooltip.html("<div><b>Game: </b>" + d.name +
+                        tooltip.html("<div><b>IMAGE Game: </b>" + d.name +
                                 "<br/><b>Developer: </b>" + d.developer
                                 + "<br/><b>Genre: </b>" + d.Category
                                 + "<br/><b>Publisher: </b>" + d.publisher
@@ -502,8 +491,10 @@
                     .attr("text-anchor", "middle")
                     .style("opacity",
                     function (d) {
-                        return d.r > 20
-                                ? 1 : 1;
+                        //if (zoomLevel == 1)
+                            return 1;
+                        //else
+                          //  return 0;
                     })
                     .style("font", function (d) {
                         if (d.children)
@@ -514,20 +505,23 @@
                     .text(
                     function (d) {
                         //console.log(d.name);
-                        if (d.children)
+                       /* if (d.children)
                             return d.IntervalName;
                         else
-                            return d.name;
-                    })
+                            return d.name;*/
 
-            ;
+                        if (zoomLevel == 1 || zoomLevel == 2)
+                            return d.name;
+                        else if (d.children)
+                            return d.IntervalName;
+                    });
             //d3.select(window).on("click", function() { zoom(root); });
         });
     }
 
+
     function zoom(d, i) {
 
-        console.log(d);
         var k = r / d.r / 2;
         x.domain([d.x - d.r, d.x + d.r]);
         y.domain([d.y - d.r, d.y + d.r]);
@@ -536,42 +530,10 @@
                 .duration(d3.event.altKey ? 7500 : 750);
 
 
-        t.selectAll("image")
-                .attr("x", function (d) {
-                    return x(d.x);
-                }) // <-- offset images correctly??
-                .attr("y", function (d) {
-                    return y(d.y);
-                }) // <-- offset images correctly??
-            //.attr("r", function(d) { return k * d.r; })
-                .attr("width", function (d) {
-                    return k * d.r;
-                })
-                .attr("height", function (d) {
-                    return k * d.r;
-                })
-                .style("opacity", function (d) {
+        zoomLevel = d.depth;
+        console.log("zoom level: " + zoomLevel);
 
-                    return 1;
-                    // only show when zoomed in
-                    //console.log(k * d.r);
-                    return k * d.r > 200 ? 1 : 0;
 
-                    if (k > 20)
-                        return 1;
-                    else
-                        return 0;
-
-                    //console.log(k);
-
-                    /*// only show images for inner bubbles
-                     return d.children ? 0 : 1;
-
-                     if (d.r >= 5)
-                     return 1;
-                     else
-                     return 0;*/
-                });
 
         t.selectAll("circle")
                 .attr("cx", function (d) {
@@ -584,6 +546,64 @@
                     return k * d.r;
                 });
 
+
+
+        t.selectAll("text")
+                .attr("x", function(d) { return x(d.x); })
+                .attr("y", function(d) {
+
+                   // if (zoomLevel == 2)
+                     //   return y(d.y - 40);
+                    //else
+                        return y(d.y);
+
+                })
+                .style("opacity",
+                function (d) {
+                   /* if (zoomLevel == 2)
+                        return 1;
+                    else
+                        return 0;*/
+
+                    return 1;
+                })
+                .style("font", function (d) {
+                    if (d.children)
+                        return "50px sans-serif";
+                    else
+                        return "18px sans-serif"
+                })
+                .text(
+                function (d) {
+                    if (zoomLevel == 1 || zoomLevel == 2)
+                        return d.name;
+                    else if (d.children)
+                        return d.IntervalName;
+                });
+
+        t.selectAll("image")
+
+                .attr("width", function (d) {
+                    return k * d.r;
+                })
+                .attr("height", function (d) {
+                    return k * d.r;
+                })
+                .attr("x", function (d) {
+                    console.log(k * d.r);
+                    return x(d.x - 20);
+                })
+                .attr("y", function (d) {
+                    return y(d.y - 20);
+                })
+                .style("opacity", function (d) {
+
+                    return 1;
+                    if (zoomLevel == 2)
+                        return 1;
+                    else
+                        return 0;
+                });
 
 
         root = d;
