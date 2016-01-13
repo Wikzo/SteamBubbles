@@ -496,8 +496,33 @@
 
                         if (d.children)
                             return "";//http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
-                        else
-                            return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
+
+
+                        if (d.Category == "ACTION")
+                            return "http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png";
+                        else if (d.Category == "ADVENTURE")
+                            return "http://icons.iconarchive.com/icons/icons8/ios7/128/Cinema-Adventures-icon.png";
+                        else if (d.Category == "CASUAL")
+                            return "http://icons.iconarchive.com/icons/double-j-design/ravenna-3d/128/Poker-icon.png";
+                        else if (d.Category == "INDIE")
+                            return "http://icons.iconarchive.com/icons/designcontest/vintage/128/Pixel-Art-icon.png";
+                        else if (d.Category == "MMO")
+                            return "http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/World-icon.png";
+                        else if (d.Category == "RACING")
+                            return "http://icons.iconarchive.com/icons/bartkowalski/1960-matchbox-cars/128/BRM-Racing-Car-icon.png";
+                        else if (d.Category == "RPG")
+                            return "http://icons.iconarchive.com/icons/chrisl21/minecraft/128/Iron-Sword-icon.png";
+                        else if (d.Category == "SIMULATION")
+                            return "http://icons.iconarchive.com/icons/awicons/vista-artistic/128/2-Hot-Train-icon.png";
+                        else if (d.Category == "SPORTS")
+                            return "http://icons.iconarchive.com/icons/custom-icon-design/flatastic-10/128/Sport-american-football-icon.png";
+                        else if (d.Category == "STRATEGY")
+                            return "http://icons.iconarchive.com/icons/aha-soft/free-large-boss/128/Army-Officer-icon.png";
+
+
+
+                            return "http://icons.iconarchive.com/icons/icondrawer/black-and-blue-add-on/128/black-chess-icon.png";
+                            //return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
                     })
                     .on("mouseover", function (d) {
 
@@ -664,7 +689,7 @@
                 })
                 .style("opacity", function (d) {
 
-                    if (zoomLevel == 2)
+                    if (zoomLevel == 2 || zoomLevel == 1)
                         return 1;
                     else
                         return 0;
