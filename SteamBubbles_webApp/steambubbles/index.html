@@ -2,6 +2,17 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF8">
 
 <head>
+
+    <script type="text/javascript">
+        function unhide(divID) {
+            var item = document.getElementById(divID);
+            if (item) {
+                item.className=(item.className=='hidden')?'unhidden':'hidden';
+            }
+        }
+    </script>
+
+
     <title>SteamBubbles</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
@@ -46,85 +57,108 @@
             pointer-events: none;
         }
 
+        .hidden { display: none; }
+        .unhidden { display: block; }
+
     </style>
 </head>
 
 <body>
 
 
-<h1>Steam Bubbles</h1>
-Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH ...
-<table style="width:100%">
-    <tr>
-        <td><label for="nAvgPlayHoursTotal"
-                   style="display: inline-block; width: 240px; text-align: right">
-            Minimum average playtime:</br> <span id="nAvgPlayHoursTotal-value"></span>
-        </label>
-            <input type="range" min="1" max="100" id="nAvgPlayHoursTotal" value="5"></td>
+<h1>SteamBubbles</h1>
+Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH. Click to zoom and hover with the mouse to reveal data about each game. <a href="javascript:unhide('about');">Click here to read more about this project ...</a></br>
+
+<div id="col1">
+       </br> <a href="javascript:unhide('filters');">Show filter options</a>
+       </br> <a href="javascript:unhide('genres');">Show genre options</a>
+</div>
+<div id="col2">
+    <div id="about" class="hidden">
+        <p><b>SteamBubbles</b></b> was created as part of a university course we had called <i>Information Visualization</i>.
+        </br></br>It utilizes a free API provided by <a href="http://steamspy.com/">SteamSpy</a> to access data from the Steam database.
+        </br>The course was about how to visualize information in new and intuitive ways. The original SteamSpy website is great, but it might be difficult to jump into if you don't know what you are looking for.
+        </br>In other words, it can be difficult to get an overview. That's why we decided to organize and visualize its data using bubbles.
+        </br></br>Having very limited experience with web development, we decided to use a JavaScript library called <a href="http://d3js.org/">D3.js</a> to draw the bubbles.
+        </br>The outer bubbles are organized by player reviews, while the inner bubbles themselves are color-coded by their genre.
+        </br>Using various filters, it is then possible to get an overview of the games.
+        <br><br>NOTE: The data is not 100% accurate (read more <a href="http://steamspy.com/about">here</a>). Also, some games are part of multiple genres, which means they will show up in multiple bubbles.
+        </p>
+    </div>
+    <div id="filters" class="hidden">
+        <table style="width:100%">
+            <tr>
+                <td><label for="nAvgPlayHoursTotal"
+                           style="font-weight:bold">
+                    Minimum average playtime:</br> <span id="nAvgPlayHoursTotal-value"></span>
+                </label>
+                    <input type="range" min="1" max="100" id="nAvgPlayHoursTotal" value="5"></td>
 
 
-        <td><label for="nNumberOfPlayersLastTwoWeeks"
-                   style="display: inline-block; width: 240px; text-align: right">
-            Minimum number of players during last two weeks:</br> <span id="nNumberOfPlayersLastTwoWeeks-value"></span>
-        </label>
-            <input type="range" min="10" max="500000" id="nNumberOfPlayersLastTwoWeeks" value="5000"></td>
+                <td><label for="nNumberOfPlayersLastTwoWeeks"
+                           style="font-weight:bold">
+                    Minimum number of players during last two weeks:</br> <span id="nNumberOfPlayersLastTwoWeeks-value"></span>
+                </label>
+                    <input type="range" min="10" max="500000" id="nNumberOfPlayersLastTwoWeeks" value="5000"></td>
 
-        <td><label for="nOwners"
-                   style="display: inline-block; width: 240px; text-align: right">
-            Minimum number of total owners:</br> <span id="nOwners-value"></span>
-        </label>
-            <input type="range" min="100" max="5000000" id="nOwners" value="5000"></td>
+                <td><label for="nOwners"
+                           style="font-weight:bold">
+                    Minimum number of total owners:</br> <span id="nOwners-value"></span>
+                </label>
+                    <input type="range" min="100" max="5000000" id="nOwners" value="5000"></td>
 
-        <td><label for="nCCUYesterday"
-                   style="display: inline-block; width: 240px; text-align: right">
-            Minimum concurrent players (CCU) yesterday: </br> <span id="nCCUYesterday-value"></span>
-        </label>
-            <input type="range" min="1" max="30000" id="nCCUYesterday" value="500"></td>
-    </tr>
-</table>
-<br class="filter_options">
+                <td><label for="nCCUYesterday"
+                    style="font-weight:bold">
+                    Minimum concurrent players (CCU) yesterday: </br> <span id="nCCUYesterday-value"></span>
+                </label>
+                    <input type="range" min="1" max="100000" id="nCCUYesterday" value="500"></td>
+            </tr>
+        </table>
+        <br class="filter_options">
+    </div>
+    <div id="genres" class="hidden">
+        <table style="width:100%">
+            <tr>
+                <td><input class="filter_button" id="icons_button" type="checkbox">Display Icons</input></td>
 
-<p><b>Genres Filters:</b></p>
-<table style="width:100%">
-    <tr>
-        <td><input class="filter_button" id="icons_button" type="checkbox">Display Icons</input></td>
-
-        <td><input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
-            </br><img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                      width="42"></td>
-        <td><input class="filter_button" id="adventure_button" type="checkbox" checked>Adventure</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
-        <td><input class="filter_button" id="casual_button" type="checkbox" checked>Casual</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
-        <td><input class="filter_button" id="indie_button" type="checkbox" checked>Indie</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
-        <td><input class="filter_button" id="mmo_button" type="checkbox" checked>MMO</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
-        <td><input class="filter_button" id="racing_button" type="checkbox" checked>Racing</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
-        <td><input class="filter_button" id="rpg_button" type="checkbox" checked>RPG</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
-        <td><input class="filter_button" id="simulation_button" type="checkbox" checked>Simulation</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
-        <td><input class="filter_button" id="sports_button" type="checkbox" checked>Sports</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
-        <td><input class="filter_button" id="strategy_button" type="checkbox" checked>Strategy</input></br>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
-                 width="42"></td>
+                <td><input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
+                    </br><img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                              width="42"></td>
+                <td><input class="filter_button" id="adventure_button" type="checkbox" checked>Adventure</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
+                <td><input class="filter_button" id="casual_button" type="checkbox" checked>Casual</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
+                <td><input class="filter_button" id="indie_button" type="checkbox" checked>Indie</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
+                <td><input class="filter_button" id="mmo_button" type="checkbox" checked>MMO</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
+                <td><input class="filter_button" id="racing_button" type="checkbox" checked>Racing</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
+                <td><input class="filter_button" id="rpg_button" type="checkbox" checked>RPG</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
+                <td><input class="filter_button" id="simulation_button" type="checkbox" checked>Simulation</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
+                <td><input class="filter_button" id="sports_button" type="checkbox" checked>Sports</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
+                <td><input class="filter_button" id="strategy_button" type="checkbox" checked>Strategy</input></br>
+                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png" height="42"
+                         width="42"></td>
 
 
-    </tr>
-</table>
+            </tr>
+        </table>
+        </div>
+</div>
+<br style="clear: both;" />
 
-</br>
 </br>
 
 </div>
@@ -334,7 +368,6 @@ Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH ...
     function Reload() {
         loadingIndex = 0;
         circles = null;
-        //minimumPlayersLastTwoWeekThreshold = minimumPlayersLastTwoWeekThreshold * 2;
         Start();
     }
     var loadingIndex = 0;
@@ -438,8 +471,8 @@ Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH ...
             .text("tooltip");
 
     var w = window.innerWidth,
-            h = window.innerWidth * 0.95,
-            r = window.innerWidth * 0.95,
+            h = window.innerWidth * 0.7,
+            r = window.innerWidth * 0.7,
             x = d3.scale.linear().range([0, r]),
             y = d3.scale.linear().range([0, r]),
             node,
