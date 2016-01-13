@@ -231,6 +231,7 @@
 
 
     function Start(useLocalData) {
+
         useLocalFiles = useLocalData;
 
         if (useLocalFiles == true)
@@ -274,7 +275,9 @@
                 var entry = data[key]; // This will be each of the three graded things
                 entry.id = key; // e.g. "id": "assessment1"
 
-                if (entry.players_2weeks > minimumPlayersLastTwoWeekThreshold) {
+                //if (entry.players_2weeks > minimumPlayersLastTwoWeekThreshold)
+                if ((entry.average_forever / 60).toFixed(2) > 5)
+                {
                     workAsArray.push(entry)
 
                 }
@@ -562,13 +565,14 @@
                         if (d.children) // dont show outer bubbles
                             return;
 
-                        tooltip.html("<div><h2><b>Game: </b>" + d.name
+                        tooltip.html("<div><h2>" + d.name
                                 + "</h2><b>Developer: </b>" + d.developer
                                 + "<br/><b>Genre: </b>" + d.Category
                                 + "<br/><b>Publisher: </b>" + d.publisher
                                 + "<br/><b>Score Ranking: </b>" + d.score_rank
                                 + "<br/><b>Owners: </b>" + d.owners
-                                + "<br/><b>Average Playtime (last 2 weeks): </b>" + d.average_2weeks
+                                + "<br/><b>Average Playtime (last 2 weeks): </b>" + (d.average_2weeks / 60).toFixed(2) + " hours"
+                                + "<br/><b>Average Playtime (forever): </b>" + (d.average_forever / 60).toFixed(2) + " hours"
                                 + "<br/><b>Players Forever: </b>" + d.players_forever
                                 + "<br/><b>Concurrent Players Peak (yesterday): </b>" + d.ccu
                                 + "<br/><b>SteamSpy ID: </b>" + d.appid
@@ -589,7 +593,21 @@
                     })
                     .on("click",
                     function (d) {
-                        return zoom(node == d ? superRoot : d);
+
+                        var nodeToZoomOn;
+
+                        if (d.depth == 2)
+                            nodeToZoomOn = d.parent;
+                        else
+                            nodeToZoomOn = d;
+
+                        if (node == nodeToZoomOn)
+                            nodeToZoomOn = superRoot;
+
+
+                        return zoom(nodeToZoomOn);
+
+                        //return zoom(node == d ? superRoot : d);
                     });
 
             vis.selectAll("text").remove();
@@ -676,17 +694,18 @@
                 })
                 .style("opacity",
                 function (d) {
-                    return 1;
-
-                })
-                .style("font", function (d) {
-                    if (d.children)
-                        return "50px sans-serif";
+                    if (zoomLevel == 0)
+                        return 1;
                     else
-                        return "10px sans-serif"
+                        return 0;
+
                 })
                 .text(
                 function (d) {
+
+                    if (zoomLevel != 0)
+                        return "";
+
                     if (d.children)
                         return d.IntervalName;
                     else
