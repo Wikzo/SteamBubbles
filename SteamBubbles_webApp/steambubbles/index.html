@@ -14,8 +14,7 @@
         text {
             font: 60px sans-serif;
             color: white;
-            text-shadow:
-            -1px -1px 0 #000,
+            text-shadow: -1px -1px 0 #000,
             1px -1px 0 #000,
             -1px 1px 0 #000,
             1px 1px 0 #000;
@@ -57,11 +56,25 @@
 <button onclick="Reload()">Show fewer games</button>
 
 
+<p>
+    <label for="nAvgPlayHoursTotal"
+           style="display: inline-block; width: 240px; text-align: right">
+        Minimum average playtime:</br> <span id="nAvgPlayHoursTotal-value"></span>
+    </label>
+    <input type="range" min="1" max="100" id="nAvgPlayHoursTotal" value="5">
+</p>
+
+<p>
+    <label for="nNumberOfPlayersLastTwoWeeks"
+           style="display: inline-block; width: 240px; text-align: right">
+        Minimum number of players during last two weeks:</br> <span id="nNumberOfPlayersLastTwoWeeks-value"></span>
+    </label>
+    <input type="range" min="10" max="500000" id="nNumberOfPlayersLastTwoWeeks" value="5000">
+</p>
+
 <br class="filter_options">
 
 <p><b>Genres Filters:</b></p>
-
-
 <table style="width:100%">
     <tr>
         <td><input class="filter_button" id="icons_button" type="checkbox">Display Icons</input></td>
@@ -111,19 +124,29 @@
 
 <script type="text/javascript">
 
-    // input fields and more:
-    // http://www.d3noob.org/2014/04/using-html-inputs-with-d3js.html
-    // https://gist.github.com/bjtucker/fd3aa6e64d565962f1c1
+    d3.select("#nAvgPlayHoursTotal").on("input", function () {
 
-    // when the input range changes update the circle
-    d3.select("#nRadius").on("input", function () {
-        //update(+this.value);
-        console.log(this.value);
+        minimumAveragePlayTimeHours = this.value;
 
-        minimumPlayersLastTwoWeekThreshold = this.value;
+        d3.select("#nAvgPlayHoursTotal-value").text(this.value + " hours");
+
+        Reload();
     });
 
+    d3.select("#nNumberOfPlayersLastTwoWeeks").on("input", function () {
+
+        minimumPlayersLastTwoWeekThreshold = this.value;
+
+        d3.select("#nNumberOfPlayersLastTwoWeeks-value").text(this.value + " players");
+
+
+        Reload();
+    });
+
+
     var minimumPlayersLastTwoWeekThreshold = 5000;
+    var minimumAveragePlayTimeHours = 5;
+    var updating = false;
 
     // access external JSON data_old in Chrome:
     // https://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource
@@ -215,23 +238,36 @@
     var defaultColor = "#ffffff";
     var notSelectedColor = "#5f5f5f";
 
-    /*var arr = new Array();
-     // or var arr = [];
-     arr.push('value1');
-     arr.push('value2');*/
 
-    d3.json("https://steamspy.com/api.php?request=genre&genre=Strategy", function(error, json) {
-        if (error)
-            Start(true);
-        else
-            Start(false);
-    });
+    Initialize();
 
-    //Start();
 
+    function Initialize() {
+        // set sliders
+        d3.select("#nAvgPlayHoursTotal-value").text(minimumAveragePlayTimeHours + " hours");
+        d3.select("#nNumberOfPlayersLastTwoWeeks-value").text(minimumPlayersLastTwoWeekThreshold + " players");
+
+        // check to use online or local data
+        d3.json("https://steamspy.com/api.php?request=genre&genre=Strategy", function (error, json) {
+            if (error)
+                Start(true);
+            else
+                Start(false);
+        });
+
+    }
 
     function Start(useLocalData) {
 
+
+        if (updating == false) {
+            updating = true;
+        }
+        else if (updating == true) {
+            // console.log("Already updating. Please wait!")
+            return;
+
+        }
         useLocalFiles = useLocalData;
 
         if (useLocalFiles == true)
@@ -262,7 +298,7 @@
     function Reload() {
         loadingIndex = 0;
         circles = null;
-        minimumPlayersLastTwoWeekThreshold = minimumPlayersLastTwoWeekThreshold * 2;
+        //minimumPlayersLastTwoWeekThreshold = minimumPlayersLastTwoWeekThreshold * 2;
         Start();
     }
     var loadingIndex = 0;
@@ -270,14 +306,16 @@
         //console.log("loading");
         d3.json(URLs[loadingIndex].url, function (error, data) {
 
-                var workAsArray = []; // This will be the resulting array
+            var workAsArray = []; // This will be the resulting array
             for (var key in data) {
                 var entry = data[key]; // This will be each of the three graded things
                 entry.id = key; // e.g. "id": "assessment1"
 
                 //if (entry.players_2weeks > minimumPlayersLastTwoWeekThreshold)
-                if ((entry.average_forever / 60).toFixed(2) > 5)
-                {
+                if (
+                        (entry.average_forever / 60) > minimumAveragePlayTimeHours
+                        && entry.players_2weeks > minimumPlayersLastTwoWeekThreshold
+                ) {
                     workAsArray.push(entry)
 
                 }
@@ -344,8 +382,8 @@
 
     var circles;
     function CheckIfAllDone() {
+        updating = false;
         circles = DrawBubbles();
-
         HighlightCategories();
     }
 
@@ -387,264 +425,264 @@
     function DrawBubbles() {
 
 
-
-            var games1 = {
-                "name": "GAMES_1",
-                "children": [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData]
-            };
+        var games1 = {
+            "name": "GAMES_1",
+            "children": [actionData, adventureData, casualData, indieData, mmoData, racingData, rpgData, simulationData, sportsData, strategyData]
+        };
         node = root = games1;
 
         root = games1;
 
 
-            var b100 = {"children": []};
-            var b90 = {"children": []};
-            var b80 = {"children": []};
-            var b70 = {"children": []};
-            var b60 = {"children": []};
-            var b50 = {"children": []};
-            var b40 = {"children": []};
-            var b30 = {"children": []};
-            var b20 = {"children": []};
-            var b10 = {"children": []};
+        var b100 = {"children": []};
+        var b90 = {"children": []};
+        var b80 = {"children": []};
+        var b70 = {"children": []};
+        var b60 = {"children": []};
+        var b50 = {"children": []};
+        var b40 = {"children": []};
+        var b30 = {"children": []};
+        var b20 = {"children": []};
+        var b10 = {"children": []};
 
-            b100.IntervalName = "91-100%";
-            b90.IntervalName = "81-90%";
-            b80.IntervalName = "71-80%";
-            b70.IntervalName = "61-70%";
-            b60.IntervalName = "51-60%";
-            b50.IntervalName = "41-50%";
-            b40.IntervalName = "31-40%";
-            b30.IntervalName = "21-30%";
-            b20.IntervalName = "11-20%";
-            b10.IntervalName = "0-10%";
+        b100.IntervalName = "91-100%";
+        b90.IntervalName = "81-90%";
+        b80.IntervalName = "71-80%";
+        b70.IntervalName = "61-70%";
+        b60.IntervalName = "51-60%";
+        b50.IntervalName = "41-50%";
+        b40.IntervalName = "31-40%";
+        b30.IntervalName = "21-30%";
+        b20.IntervalName = "11-20%";
+        b10.IntervalName = "0-10%";
 
-            var gameNode = {"name": "GAMES_2", "children": [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
+        var gameNode = {"name": "GAMES_2", "children": [b100, b90, b80, b70, b60, b50, b40, b30, b20, b10]};
 
-            superRoot = gameNode;
+        superRoot = gameNode;
 
-            // get all children's score rank
-            root.children.forEach(function (d) {
-
-
-                if (d.children) {
-
-                    d.children.forEach(function (game) {
-                        game.Category = d.Category;
-
-                        if (game.score_rank > 90)
-                            gameNode.children[0].children.push(game);
-                        else if (game.score_rank > 80)
-                            gameNode.children[1].children.push(game);
-                        else if (game.score_rank > 70)
-                            gameNode.children[2].children.push(game);
-                        else if (game.score_rank > 50)
-                            gameNode.children[4].children.push(game);
-                        else if (game.score_rank > 40)
-                            gameNode.children[5].children.push(game);
-                        else if (game.score_rank > 30)
-                            gameNode.children[6].children.push(game);
-                        else if (game.score_rank > 20)
-                            gameNode.children[7].children.push(game);
-                        else if (game.score_rank > 10)
-                            gameNode.children[8].children.push(game);
-                        else
-                            gameNode.children[9].children.push(game);
-
-                    });
-                }
-            });
-
-            var nodes = pack.nodes(gameNode);
-
-            vis.selectAll("circle").remove();
-
-            vis.selectAll("circle")
-                    .data(nodes)
-                    .enter().append("svg:circle")
-                    .attr("class", function (d) {
-                        return d.children ? "parent" : "child";
-                    })
-                    .attr("cx", function (d) {
-                        return d.x;
-                    })
-                    .attr("cy", function (d) {
-                        return d.y;
-                    })
-                    .attr("r", function (d) {
-                        return d.r;
-                    })
-                    .style("opacity", 1)
-                    .style("fill", function (d) {
+        // get all children's score rank
+        root.children.forEach(function (d) {
 
 
-                        // genre color
-                        if (d.Category == "ACTION")
-                            return actionColor;
-                        else if (d.Category == "ADVENTURE")
-                            return adventureColor;
-                        else if (d.Category == "CASUAL")
-                            return casualColor;
-                        else if (d.Category == "INDIE")
-                            return indieColor;
-                        else if (d.Category == "MMO")
-                            return mmoColor;
-                        else if (d.Category == "RACING")
-                            return racingColor;
-                        else if (d.Category == "RPG")
-                            return rpgColor;
-                        else if (d.Category == "SIMULATION")
-                            return simulationColor;
-                        else if (d.Category == "SPORTS")
-                            return sportsColor;
-                        else if (d.Category == "STRATEGY")
-                            return strategyColor;
-                        else
-                            return defaultColor;
+            if (d.children) {
 
-                    })
-                    .on("click", function (d) {
-                        return zoom(node == d ? root : d);
-                    });
+                d.children.forEach(function (game) {
+                    game.Category = d.Category;
 
+                    if (game.score_rank > 90)
+                        gameNode.children[0].children.push(game);
+                    else if (game.score_rank > 80)
+                        gameNode.children[1].children.push(game);
+                    else if (game.score_rank > 70)
+                        gameNode.children[2].children.push(game);
+                    else if (game.score_rank > 50)
+                        gameNode.children[4].children.push(game);
+                    else if (game.score_rank > 40)
+                        gameNode.children[5].children.push(game);
+                    else if (game.score_rank > 30)
+                        gameNode.children[6].children.push(game);
+                    else if (game.score_rank > 20)
+                        gameNode.children[7].children.push(game);
+                    else if (game.score_rank > 10)
+                        gameNode.children[8].children.push(game);
+                    else
+                        gameNode.children[9].children.push(game);
 
-            vis.selectAll("image").remove();
+                });
+            }
+        });
 
-            vis.selectAll("image")
-                    .data(nodes)
-                    .enter().append("svg:image")
-                    .attr("x", function (d) {
-                        return d.x - d.r;
-                    })
-                    .attr("y", function (d) {
-                        return d.y - d.r;
-                    })
-                    .attr("width", function (d) {
-                        return d.r * 2;
-                    })
-                    .attr("height", function (d) {
-                        return d.r * 2;
-                    })
-                    .style("opacity", function (d) {
-                        return showIcons ? 1 : 0;
+        var nodes = pack.nodes(gameNode);
 
-                    })
-                    .attr("xlink:href", function (d) {
+        vis.selectAll("circle").remove();
+
+        vis.selectAll("circle")
+                .data(nodes)
+                .enter().append("svg:circle")
+                .attr("class", function (d) {
+                    return d.children ? "parent" : "child";
+                })
+                .attr("cx", function (d) {
+                    return d.x;
+                })
+                .attr("cy", function (d) {
+                    return d.y;
+                })
+                .attr("r", function (d) {
+                    return d.r;
+                })
+                .style("opacity", 1)
+                .style("fill", function (d) {
 
 
-                        if (d.children)
-                            return "";//http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
+                    // genre color
+                    if (d.Category == "ACTION")
+                        return actionColor;
+                    else if (d.Category == "ADVENTURE")
+                        return adventureColor;
+                    else if (d.Category == "CASUAL")
+                        return casualColor;
+                    else if (d.Category == "INDIE")
+                        return indieColor;
+                    else if (d.Category == "MMO")
+                        return mmoColor;
+                    else if (d.Category == "RACING")
+                        return racingColor;
+                    else if (d.Category == "RPG")
+                        return rpgColor;
+                    else if (d.Category == "SIMULATION")
+                        return simulationColor;
+                    else if (d.Category == "SPORTS")
+                        return sportsColor;
+                    else if (d.Category == "STRATEGY")
+                        return strategyColor;
+                    else
+                        return defaultColor;
 
-                        if (d.Category == "ACTION")
-                            return actionIcon;
-                        else if (d.Category == "ADVENTURE")
-                            return adventureIcon;
-                        else if (d.Category == "CASUAL")
-                            return casualIcon;
-                        else if (d.Category == "INDIE")
-                            return indieIcon;
-                        else if (d.Category == "MMO")
-                            return mmoIcon;
-                        else if (d.Category == "RACING")
-                            return racingIcon;
-                        else if (d.Category == "RPG")
-                            return rpgIcon;
-                        else if (d.Category == "SIMULATION")
-                            return simulationIcon;
-                        else if (d.Category == "SPORTS")
-                            return sportsIcon;
-                        else if (d.Category == "STRATEGY")
-                            return strategyIcon;
-                        else
-                            return "";
-
-                        //return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
-                    })
-                    .on("mouseover", function (d) {
-
-                        if (d.children) // dont show outer bubbles
-                            return;
-
-                        tooltip.html("<div><h2>" + d.name
-                                + "</h2><b>Developer: </b>" + d.developer
-                                + "<br/><b>Genre: </b>" + d.Category
-                                + "<br/><b>Publisher: </b>" + d.publisher
-                                + "<br/><b>Score Ranking: </b>" + d.score_rank
-                                + "<br/><b>Owners: </b>" + d.owners
-                                + "<br/><b>Average Playtime (last 2 weeks): </b>" + (d.average_2weeks / 60).toFixed(2) + " hours"
-                                + "<br/><b>Average Playtime (forever): </b>" + (d.average_forever / 60).toFixed(2) + " hours"
-                                + "<br/><b>Players Forever: </b>" + d.players_forever
-                                + "<br/><b>Concurrent Players Peak (yesterday): </b>" + d.ccu
-                                + "<br/><b>SteamSpy ID: </b>" + d.appid
-                                + " </div>");
-                        tooltip.append("img")
-                                .attr("src", "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg").attr("width", "230px")
-                                .attr("height",
-                                "107.5px");
-                        tooltip.style("visibility", "visible");
-                    })
-                    .on("mousemove", function () {
-                        return tooltip.style("top", ( d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px");
-                    })
-                    .on("mouseout",
-                    function () {
-                        return tooltip.style("visibility",
-                                "hidden");
-                    })
-                    .on("click",
-                    function (d) {
-
-                        var nodeToZoomOn;
-
-                        if (d.depth == 2)
-                            nodeToZoomOn = d.parent;
-                        else
-                            nodeToZoomOn = d;
-
-                        if (node == nodeToZoomOn)
-                            nodeToZoomOn = superRoot;
+                })
+                .on("click", function (d) {
+                    return zoom(node == d ? root : d);
+                });
 
 
-                        return zoom(nodeToZoomOn);
+        vis.selectAll("image").remove();
 
-                        //return zoom(node == d ? superRoot : d);
-                    });
+        vis.selectAll("image")
+                .data(nodes)
+                .enter().append("svg:image")
+                .attr("x", function (d) {
+                    return d.x - d.r;
+                })
+                .attr("y", function (d) {
+                    return d.y - d.r;
+                })
+                .attr("width", function (d) {
+                    return d.r * 2;
+                })
+                .attr("height", function (d) {
+                    return d.r * 2;
+                })
+                .style("opacity", function (d) {
+                    return showIcons ? 1 : 0;
 
-            vis.selectAll("text").remove();
+                })
+                .attr("xlink:href", function (d) {
 
-            vis.selectAll("text")
-                    .data(nodes)
-                    .enter().append("svg:text")
-                    .attr("class",
-                    function (d) {
-                        return d.children ? "parent" :
-                                "child";
-                    })
-                    .attr("x",
-                    function (d) {
-                        return d.x;
-                    })
-                    .attr("y",
-                    function (d) {
-                        return d.y;
-                    })
-                    .attr("dy", ".35em")
-                    .attr("text-anchor", "middle")
-                    .style("opacity",
-                    function (d) {
 
-                        return 1;
-                    })
+                    if (d.children)
+                        return "";//http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png";
 
-                    .text(
-                    function (d) {
+                    if (d.Category == "ACTION")
+                        return actionIcon;
+                    else if (d.Category == "ADVENTURE")
+                        return adventureIcon;
+                    else if (d.Category == "CASUAL")
+                        return casualIcon;
+                    else if (d.Category == "INDIE")
+                        return indieIcon;
+                    else if (d.Category == "MMO")
+                        return mmoIcon;
+                    else if (d.Category == "RACING")
+                        return racingIcon;
+                    else if (d.Category == "RPG")
+                        return rpgIcon;
+                    else if (d.Category == "SIMULATION")
+                        return simulationIcon;
+                    else if (d.Category == "SPORTS")
+                        return sportsIcon;
+                    else if (d.Category == "STRATEGY")
+                        return strategyIcon;
+                    else
+                        return "";
 
-                        if (d.children)
-                            return d.IntervalName;
-                        else
-                            return "";
-                    });
-            //d3.select(window).on("click", function() { zoom(root); });
+                    //return "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg";
+                })
+                .on("mouseover", function (d) {
+
+                    if (d.children) // dont show outer bubbles
+                        return;
+
+                    tooltip.html("<div><h2>" + d.name
+                            + "</h2><b>Developer: </b>" + d.developer
+                            + "<br/><b>Genre: </b>" + d.Category
+                            + "<br/><b>Publisher: </b>" + d.publisher
+                            + "<br/><b>Score Ranking: </b>" + d.score_rank
+                            + "<br/><b>Owners: </b>" + d.owners.toLocaleString()
+                            + "<br/><b>Average Playtime (last 2 weeks): </b>" + (d.average_2weeks / 60).toFixed(2) + " hours"
+                            + "<br/><b>Average Playtime (forever): </b>" + (d.average_forever / 60).toFixed(2) + " hours"
+                            + "<br/><b>Number of players (last 2 weeks): </b>" + d.players_2weeks.toLocaleString()
+                            + "<br/><b>Number of players (forever): </b>" + d.players_forever.toLocaleString()
+                            + "<br/><b>Concurrent Players Peak (yesterday): </b>" + d.ccu.toLocaleString()
+                            + "<br/><b>SteamSpy ID: </b>" + d.appid
+                            + " </div>");
+                    tooltip.append("img")
+                            .attr("src", "http://cdn.akamai.steamstatic.com/steam/apps/" + d.appid + "/header.jpg").attr("width", "230px")
+                            .attr("height",
+                            "107.5px");
+                    tooltip.style("visibility", "visible");
+                })
+                .on("mousemove", function () {
+                    return tooltip.style("top", ( d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px");
+                })
+                .on("mouseout",
+                function () {
+                    return tooltip.style("visibility",
+                            "hidden");
+                })
+                .on("click",
+                function (d) {
+
+                    var nodeToZoomOn;
+
+                    if (d.depth == 2)
+                        nodeToZoomOn = d.parent;
+                    else
+                        nodeToZoomOn = d;
+
+                    if (node == nodeToZoomOn)
+                        nodeToZoomOn = superRoot;
+
+
+                    return zoom(nodeToZoomOn);
+
+                    //return zoom(node == d ? superRoot : d);
+                });
+
+        vis.selectAll("text").remove();
+
+        vis.selectAll("text")
+                .data(nodes)
+                .enter().append("svg:text")
+                .attr("class",
+                function (d) {
+                    return d.children ? "parent" :
+                            "child";
+                })
+                .attr("x",
+                function (d) {
+                    return d.x;
+                })
+                .attr("y",
+                function (d) {
+                    return d.y;
+                })
+                .attr("dy", ".35em")
+                .attr("text-anchor", "middle")
+                .style("opacity",
+                function (d) {
+
+                    return 1;
+                })
+
+                .text(
+                function (d) {
+
+                    if (d.children)
+                        return d.IntervalName;
+                    else
+                        return "";
+                });
+        //d3.select(window).on("click", function() { zoom(root); });
 
     }
 
