@@ -88,7 +88,7 @@ to reveal data about each game. The big percentage numbers in gold indicate <b>p
 </div>
 <div id="col2">
     <div id="about" class="hidden">
-        <p><b>SteamBubbles</b></b> was created as part of a university course we had called <i>Information
+        <p><img src="steambubbles_logo_small.png"/></br><b>SteamBubbles</b></b> was created as part of a university course we had called <i>Information
             Visualization</i> in Winter 2015/2016.
             </br></br>It utilizes a free API provided by <a href="http://steamspy.com/">SteamSpy</a> to access data from
             the Steam database.
@@ -96,7 +96,7 @@ to reveal data about each game. The big percentage numbers in gold indicate <b>p
             website is great, but it might be difficult to jump into if you don't know what you are looking for.
             </br>In other words, it can be difficult to get an overview. That's why we decided to organize and visualize
             its data using bubbles.
-            </br></br>Having very limited experience with web development, we decided to use a JavaScript library called
+            </br></br>Having no prior experience with web development, we decided to use a JavaScript library called
             <a href="http://d3js.org/">D3.js</a> to draw the bubbles.
             </br>The outer bubbles are organized by player reviews, while the inner bubbles themselves are color-coded
             by their genre.
@@ -311,26 +311,26 @@ to reveal data about each game. The big percentage numbers in gold indicate <b>p
 
 
     var actionColor = '#9b2f3a';
-    var adventureColor = '#576c5e';
+    var adventureColor = '#e58538';
     var casualColor = '#ff69dd';
     var indieColor = '#93794d';
     var mmoColor = '#1a3f75';
     var racingColor = '#afafaf';
     var rpgColor = '#04b2d9';
-    var simulationColor = '#f28f38';
+    var simulationColor = '#e4fa2e';
     var sportsColor = '#67f25c';
     var strategyColor = '#f2766b';
     var defaultColor = "#ffffff";
-    var notSelectedColor = "#000000";
+    var notSelectedColor = "#575757";
 
     var currentActionColor = '#9b2f3a';
-    var currentAdventureColor = '#576c5e';
+    var currentAdventureColor = '#e58538';
     var currentCasualColor = '#ff69dd';
     var currentIndieColor = '#93794d';
     var currentMmoColor = '#1a3f75';
     var currentRacingColor = '#afafaf';
     var currentRpgColor = '#04b2d9';
-    var currentSimulationColor = '#f28f38';
+    var currentSimulationColor = '#e4fa2e';
     var currentSportsColor = '#67f25c';
     var currentStrategyColor = '#f2766b';
 
@@ -472,7 +472,7 @@ to reveal data about each game. The big percentage numbers in gold indicate <b>p
     }
 
     function DoneLoading(dataToStore) {
-        console.log(URLs[loadingIndex].name + " loaded");
+        //console.log(URLs[loadingIndex].name + " loaded");
         loadingIndex++;
 
         if (loadingIndex < URLs.length)
