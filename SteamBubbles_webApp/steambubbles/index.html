@@ -78,8 +78,9 @@
 
 <h1>SteamBubbles</h1>
 Created by <a href="https://twitter.com/Wikzo">@Wikzo</a> and AJH. <b>Click to zoom</b> and <b>hover with the mouse</b>
-to reveal data about each game. <a href="javascript:unhide('about');">Click here to read more about this
-    project.</a></br>
+to reveal data about each game. The big percentage numbers in gold indicate <b>player review scores</b> from Steam.
+</br><a href="javascript:unhide('about');">Click here to read more about this
+    project.</a></br><hr>
 
 <div id="col1">
     </br> <a href="javascript:unhide('filters');">Show filter options</a>
@@ -101,7 +102,7 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
             by their genre.
             </br>Using various filters, it is then possible to get an overview of the games.
             <br><br>NOTE 1: The data is not 100% accurate (read more <a href="http://steamspy.com/about">here</a>).
-            Also, some games are part of multiple genres, which means they will show up in multiple bubbles.
+            Additionally, the SteamSpy API only allows for 4 requests per second. Also, some games are part of multiple genres, which means they will show up in multiple bubbles.
             </br>NOTE 2: Most modern browsers do not allow cross-domain requests (read details <a
                     href="https://github.com/mbostock/d3/wiki/Requests">here</a>), which means that we cannot fetch the
             JSON files from the SteamSpy website dynamically.
@@ -116,7 +117,7 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
             <tr>
                 <td><label for="nAvgPlayHoursTotal"
                            style="font-weight:bold">
-                    Minimum average playtime:</br> <span id="nAvgPlayHoursTotal-value"></span>
+                    Minimum average playtime (forever):</br> <span id="nAvgPlayHoursTotal-value"></span>
                 </label>
                     <input type="range" min="1" max="100" id="nAvgPlayHoursTotal" value="5"></td>
 
@@ -136,7 +137,7 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
 
                 <td><label for="nCCUYesterday"
                            style="font-weight:bold">
-                    Minimum concurrent players (CCU) yesterday: </br> <span id="nCCUYesterday-value"></span>
+                    Minimum concurrent players (yesterday): </br> <span id="nCCUYesterday-value"></span>
                 </label>
                     <input type="range" min="1" max="100000" id="nCCUYesterday" value="500"></td>
             </tr>
@@ -146,7 +147,7 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
     <div id="genres" class="hidden">
         <table style="width:100%">
             <tr>
-                <td><input class="filter_button" id="icons_button" type="checkbox">Display Icons</input></td>
+                <td><input class="filter_button" id="icons_button" type="checkbox" checked>Display Icons</input></td>
 
                 <td><input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
                     </br><img src="action_c.png"
@@ -284,9 +285,6 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
     var superRoot;
 
 
-
-
-
     var actionIcon = "action.png";
     var adventureIcon = "adventure.png";
     var casualIcon = "casual.png";
@@ -298,7 +296,7 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
     var sportsIcon = "sports.png";
     var strategyIcon = "strategy.png"
 
-    var showIcons = false;
+    var showIcons = true;
 
     var showAction = true;
     var showCasual = true;
@@ -579,6 +577,8 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
                         gameNode.children[1].children.push(game);
                     else if (game.score_rank > 70)
                         gameNode.children[2].children.push(game);
+                    else if (game.score_rank > 60)
+                        gameNode.children[3].children.push(game);
                     else if (game.score_rank > 50)
                         gameNode.children[4].children.push(game);
                     else if (game.score_rank > 40)
