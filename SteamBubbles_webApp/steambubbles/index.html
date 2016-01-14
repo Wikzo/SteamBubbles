@@ -65,6 +65,11 @@
             display: block;
         }
 
+        td {
+            text-align: center; /* center checkbox horizontally */
+            vertical-align: middle; /* center checkbox vertically */
+        }
+
     </style>
 </head>
 
@@ -144,45 +149,45 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
                 <td><input class="filter_button" id="icons_button" type="checkbox">Display Icons</input></td>
 
                 <td><input class="filter_button" id="action_button" type="checkbox" checked>Action</input>
-                    </br><img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                              height="42"
-                              width="42"></td>
+                    </br><img src="action_c.png"
+                              height="64"
+                              width="64"></td>
                 <td><input class="filter_button" id="adventure_button" type="checkbox" checked>Adventure</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="adventure_c.png"
+                         height="64"
+                         width="64"></td>
                 <td><input class="filter_button" id="casual_button" type="checkbox" checked>Casual</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="casual_c.png"
+                         height="64"
+                         width="64"></td>
                 <td><input class="filter_button" id="indie_button" type="checkbox" checked>Indie</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="indie_c.png"
+                         height="64"
+                         width="64"></td>
                 <td><input class="filter_button" id="mmo_button" type="checkbox" checked>MMO</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="mmo_c.png"
+                         height="64"
+                         width="64"></td>
                 <td><input class="filter_button" id="racing_button" type="checkbox" checked>Racing</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="racing_c.png"
+                         height="64"
+                         width="64"></td>
                 <td><input class="filter_button" id="rpg_button" type="checkbox" checked>RPG</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="rpg_c.png"
+                         height="64"
+                         width="64"></td>
                 <td><input class="filter_button" id="simulation_button" type="checkbox" checked>Simulation</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="simulation_c.png"
+                         height="64"
+                         width="64"></td>
                 <td><input class="filter_button" id="sports_button" type="checkbox" checked>Sports</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="sports_c.png"
+                         height="64"
+                         width="64"></td>
                 <td><input class="filter_button" id="strategy_button" type="checkbox" checked>Strategy</input></br>
-                    <img src="http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png"
-                         height="42"
-                         width="42"></td>
+                    <img src="strategy_c.png"
+                         height="64"
+                         width="64"></td>
 
 
             </tr>
@@ -278,40 +283,20 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
     var zoomLevel = 0;
     var superRoot;
 
-    var actionColor = '#9b2f3a';
-    var adventureColor = '#576c5e';
-    var casualColor = '#dac5a8';
-    var indieColor = '#93794d';
-    var mmoColor = '#1a3f75';
-    var racingColor = '#093640';
-    var rpgColor = '#04b2d9';
-    var simulationColor = '#f28f38';
-    var sportsColor = '#f2be5c';
-    var strategyColor = '#f2766b';
-    var defaultColor = "#ffffff";
-    var notSelectedColor = "#000000";
 
-    var currentActionColor = '#9b2f3a';
-    var currentAdventureColor = '#576c5e';
-    var currentCasualColor = '#dac5a8';
-    var currentIndieColor = '#93794d';
-    var currentMmoColor = '#1a3f75';
-    var currentRacingColor = '#093640';
-    var currentRpgColor = '#04b2d9';
-    var currentSimulationColor = '#f28f38';
-    var currentSportsColor = '#f2be5c';
-    var currentStrategyColor = '#f2766b';
 
-    var actionIcon = "http://icons.iconarchive.com/icons/icons8/ios7/128/Military-Firing-Gun-icon.png";
-    var adventureIcon = "http://icons.iconarchive.com/icons/icons8/ios7/128/Cinema-Adventures-icon.png";
-    var casualIcon = "http://icons.iconarchive.com/icons/double-j-design/ravenna-3d/128/Poker-icon.png";
-    var indieIcon = "http://icons.iconarchive.com/icons/designcontest/vintage/128/Pixel-Art-icon.png";
-    var mmoIcon = "http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/World-icon.png";
-    var racingIcon = "http://icons.iconarchive.com/icons/bartkowalski/1960-matchbox-cars/128/BRM-Racing-Car-icon.png";
-    var rpgIcon = "http://icons.iconarchive.com/icons/chrisl21/minecraft/128/Iron-Sword-icon.png";
-    var simulationIcon = "http://icons.iconarchive.com/icons/awicons/vista-artistic/128/2-Hot-Train-icon.png";
-    var sportsIcon = "http://icons.iconarchive.com/icons/custom-icon-design/flatastic-10/128/Sport-american-football-icon.png";
-    var strategyIcon = "http://icons.iconarchive.com/icons/aha-soft/free-large-boss/128/Army-Officer-icon.png"
+
+
+    var actionIcon = "action.png";
+    var adventureIcon = "adventure.png";
+    var casualIcon = "casual.png";
+    var indieIcon = "indie.png";
+    var mmoIcon = "mmo.png";
+    var racingIcon = "racing.png";
+    var rpgIcon = "rpg.png";
+    var simulationIcon = "simulation.png";
+    var sportsIcon = "sports.png";
+    var strategyIcon = "strategy.png"
 
     var showIcons = false;
 
@@ -325,17 +310,33 @@ to reveal data about each game. <a href="javascript:unhide('about');">Click here
     var showSports = true;
     var showStrategy = true;
 
+
+
+    var actionColor = '#9b2f3a';
     var adventureColor = '#576c5e';
-    var casualColor = '#dac5a8';
+    var casualColor = '#ff69dd';
     var indieColor = '#93794d';
     var mmoColor = '#1a3f75';
-    var racingColor = '#093640';
+    var racingColor = '#afafaf';
     var rpgColor = '#04b2d9';
     var simulationColor = '#f28f38';
-    var sportsColor = '#f2be5c';
+    var sportsColor = '#67f25c';
     var strategyColor = '#f2766b';
     var defaultColor = "#ffffff";
-    var notSelectedColor = "#5f5f5f";
+    var notSelectedColor = "#000000";
+
+    var currentActionColor = '#9b2f3a';
+    var currentAdventureColor = '#576c5e';
+    var currentCasualColor = '#ff69dd';
+    var currentIndieColor = '#93794d';
+    var currentMmoColor = '#1a3f75';
+    var currentRacingColor = '#afafaf';
+    var currentRpgColor = '#04b2d9';
+    var currentSimulationColor = '#f28f38';
+    var currentSportsColor = '#67f25c';
+    var currentStrategyColor = '#f2766b';
+
+
 
 
     Initialize();
